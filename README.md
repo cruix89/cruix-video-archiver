@@ -1,13 +1,13 @@
 # cruix89 / cruix-video-archiver
-[![GitHub last commit](https://img.shields.io/github/last-commit/jeeaaasus/youtube-dl?logo=github)](https://github.com/Jeeaaasus/youtube-dl/actions/workflows/push-unstable-image.yml/)
-[![GitHub Automated build](https://img.shields.io/github/actions/workflow/status/jeeaaasus/youtube-dl/push-release-version-image.yml?logo=github)](https://github.com/Jeeaaasus/youtube-dl/actions/workflows/push-release-version-image.yml/)
-[![Image Size](https://img.shields.io/docker/image-size/jeeaaasustest/youtube-dl/latest?style=flat&logo=docker)](https://hub.docker.com/r/jeeaaasustest/youtube-dl/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/jeeaaasustest/youtube-dl?style=flat&logo=docker)](https://hub.docker.com/r/jeeaaasustest/youtube-dl/)
-[![Docker Stars](https://img.shields.io/docker/stars/jeeaaasustest/youtube-dl?style=flat&logo=docker)](https://hub.docker.com/r/jeeaaasustest/youtube-dl/)
+[![GitHub last commit](https://img.shields.io/github/last-commit/cruix89/cruix-video-archiver?logo=github)](https://github.com/cruix89/cruix-video-archiver/actions/workflows/push-unstable-image.yml/)
+[![GitHub Automated build](https://img.shields.io/github/actions/workflow/status/cruix89/cruix-video-archiver/push-release-version-image.yml?logo=github)](https://github.com/cruix89/cruix-video-archiver/actions/workflows/push-release-version-image.yml/)
+[![Image Size](https://img.shields.io/docker/image-size/cruix89/cruix-video-archiver/latest?style=flat&logo=docker)](https://hub.docker.com/r/cruix89/cruix-video-archiver/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/cruix89/cruix-video-archiver?style=flat&logo=docker)](https://hub.docker.com/r/cruix89/cruix-video-archiver/)
+[![Docker Stars](https://img.shields.io/docker/stars/cruix89/cruix-video-archiver?style=flat&logo=docker)](https://hub.docker.com/r/cruix89/cruix-video-archiver/)
 
-**Automated yt-dlp Docker image for downloading YouTube subscriptions**
+**automated yt-dlp docker image for downloading YouTube subscriptions and others platforms supported by youtube-dlp**
 
-Docker hub page [here](https://hub.docker.com/r/jeeaaasustest/youtube-dl).  
+Docker Hub page [here](https://hub.docker.com/r/cruix89/cruix-video-archiver).  
 yt-dlp documentation [here](https://github.com/yt-dlp/yt-dlp).
 
 # Features
@@ -40,28 +40,24 @@ yt-dlp documentation [here](https://github.com/yt-dlp/yt-dlp).
 "I want to download all my subscriptions and my watch later playlist in 4k"
 ```
 docker run -d \
-    --name youtube-dl \
+    --name cruix-video-archiver \
     -v youtube-dl_data:/config \
     -v <PATH>:/downloads \
     -e youtubedl_subscriptions=true \
     -e youtubedl_watchlater=true \
     -e youtubedl_quality=2160 \
-    jeeaaasustest/youtube-dl
+    cruix89/cruix-video-archiver
 ```
-Then add your cookies as explained in the [Configure youtube-dl](https://github.com/Jeeaaasus/youtube-dl#configure-youtube-dl) section below.
-
 <br>
 
 "I want to download only certain channels"
 ```
 docker run -d \
-    --name youtube-dl \
+    --name cruix-video-archiver \
     -v youtube-dl_data:/config \
     -v <PATH>:/downloads \
-    jeeaaasustest/youtube-dl
+    cruix89/cruix-video-archiver
 ```
-Then configure the channels as explained in the [Configure youtube-dl](https://github.com/Jeeaaasus/youtube-dl#configure-youtube-dl) section below.
-
 **Explanation**
 * `-v youtube-dl_data:/config`  
   This makes a Docker volume where your config files are saved, named: `youtube-dl_data`.
@@ -100,14 +96,7 @@ Then configure the channels as explained in the [Configure youtube-dl](https://g
     * Automatically built when a new version of yt-dlp is released.
     * Does not update.
 
-# Configure youtube-dl
-* **Authentication**
-
-    Cookies are used to authenticate your YouTube account which is necessary if you want to download members only videos you have access to or your own private videos and playlists like Watch Later.
-
-    In order to pass your cookies to youtube-dl, you first need a browser extension to extract your cookies, for example, [Get cookies.txt](https://chrome.google.com/webstore/detail/get-cookiestxt/bgaddhkoddajcdgocldbbfleckgcbcid/) (Chrome) or [cookies.txt](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/) (Firefox).  
-    Once you've extracted your cookies, place the `cookies.txt` file inside your Docker volume named `youtube-dl_data` or the folder `/config/` inside your container. One way of doing this would be using the command: `docker cp ./cookies.txt youtube-dl:/config/`.  
-    Then youtube-dl will find and use the `cookies.txt` file automatically.
+# Configure cruix-video-archiver
 
 * **channels.txt**
 
