@@ -2,4 +2,6 @@
 
 sleep 30s
 umask "$UMASK"
+bash /app/youtube-dl/download-analyzer.sh
+sleep 30s
 exec s6-setuidgid abc /app/youtube-dl/youtube-dl.sh

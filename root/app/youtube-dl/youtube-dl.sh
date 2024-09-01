@@ -8,7 +8,7 @@ if grep -qPe '^--download-archive ' '/config/args.conf'; then youtubedl_args_dow
 youtubedl_binary='yt-dlp'
 exec="$youtubedl_binary"
 exec+=" --config-location '/config/args.conf'"
-exec+=" --batch-file '/tmp/urls'"; (cat '/config/channels.txt'; echo '') > '/tmp/urls.temp'
+exec+=" --batch-file '/tmp/urls'"; (cat '/config/download-archive.txt'; echo '') > '/tmp/urls.temp'
 if $youtubedl_args_verbose; then exec+=" --verbose"; fi
 if $youtubedl_args_output_expand; then exec+=" $(grep -Pe '^(--output |-o ).*\$\(' '/config/args.conf')"; fi
 if [ -f '/config/cookies.txt' ]; then exec+=" --cookies '/config/cookies.txt'"; fi
