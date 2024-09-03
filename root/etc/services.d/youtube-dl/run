@@ -1,8 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-sleep 30s
-umask "$UMASK"
-# shellcheck disable=SC2093
-exec s6-setuidgid abc /app/youtube-dl/download-analyzer.sh
-sleep 30s
-bash /app/youtube-dl/youtube-dl.sh
