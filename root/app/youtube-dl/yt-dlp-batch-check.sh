@@ -47,9 +47,8 @@ do
   fi
 
   url=$(cat /tmp/urls)
-  output_path=$(dirname "$(realpath "/config/channels.txt")")
-  download_archive="$output_path/download-archive.txt"
-  failed_videos="$output_path/failed-videos.txt"
+  download_archive="/config/download-archive.txt"
+  failed_videos="/config/failed-videos.txt"
 
   if eval "$exec $extra_url_args"
   then
