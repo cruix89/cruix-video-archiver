@@ -10,5 +10,4 @@ chown -R abc:abc /var/run/s6/services
 chown -R abc:abc /root
 
 chmod +x /app/youtube-dl/updater.sh
-chmod +x /app/youtube-dl/yt-dlp-batch-check.sh
 chmod +x /app/youtube-dl/youtube-dl.sh
