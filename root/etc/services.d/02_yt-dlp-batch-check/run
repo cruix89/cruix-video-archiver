@@ -1,5 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-sleep 30s
-umask "$UMASK"
-exec s6-setuidgid abc /app/youtube-dl/yt-dlp-batch-check.sh

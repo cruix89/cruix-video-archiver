@@ -8,7 +8,22 @@ if grep -qPe '^--download-archive ' '/config/args.conf'; then youtubedl_args_dow
 youtubedl_binary='yt-dlp'
 exec="$youtubedl_binary"
 exec+=" --config-location '/config/args.conf'"
-exec+=" --batch-file '/tmp/urls'"; (cat '/config/download-archive.txt'; echo '') > '/tmp/urls.temp'
+exec+=" --batch-file '/tmp/urls'"; (cat '/config/channels.txt'; echo '') > '/tmp/urls.temp'
+
+# Verifica se existe o arquivo failed-downloads.txt e manipula conforme necessário
+failed_downloads_file='/config/failed-downloads.txt'
+if [ ! -f "$failed_downloads_file" ]; then
+  touch "$failed_downloads_file"
+fi
+
+# Remove links de failed-downloads.txt do /tmp/urls.temp
+if [ -s "$failed_downloads_file" ]; then
+  while IFS= read -r failed_url; do
+    grep -vF "$failed_url" '/tmp/urls.temp' > '/tmp/urls.temp.new'
+    mv '/tmp/urls.temp.new' '/tmp/urls.temp'
+  done < "$failed_downloads_file"
+fi
+
 if $youtubedl_args_verbose; then exec+=" --verbose"; fi
 if $youtubedl_args_output_expand; then exec+=" $(grep -Pe '^(--output |-o ).*\$\(' '/config/args.conf')"; fi
 if [ -f '/config/cookies.txt' ]; then exec+=" --cookies '/config/cookies.txt'"; fi
@@ -43,7 +58,15 @@ do
   else
     mv '/tmp/urls.temp' '/tmp/urls'
   fi
-  eval "$exec $extra_url_args"
+
+  # Execute o comando e capture o código de saída
+  if eval "$exec $extra_url_args"; then
+    echo "download is done!"
+  else
+    # Grava o link no arquivo de falhas se houver erro
+    echo "$extra_url_args" >> "$failed_downloads_file"
+  fi
+
   rm -f '/tmp/urls'
 done
 
