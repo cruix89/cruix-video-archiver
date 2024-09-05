@@ -14,4 +14,5 @@ fi
 
 ln -fs /config/args.conf /etc/yt-dlp.conf
 
+# shellcheck disable=SC2016
 sed -i -E 's!\$youtubedl_quality!'"${youtubedl_quality}"'!g' /config.default/format

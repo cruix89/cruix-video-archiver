@@ -41,7 +41,7 @@ jobs:
       - name: Remove updater
         run: |
           rm --verbose root/app/youtube-dl/updater.sh
-          rm --verbose -r root/etc/services.d/01_updater/
+          rm --verbose -r root/etc/services.d/updater/
 
       - name: Print image tag
         run: |

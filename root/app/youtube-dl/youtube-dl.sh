@@ -68,7 +68,7 @@ echo "$youtubedl_binary version: $youtubedl_version"
 if [ "$youtubedl_interval" != 'false' ]
 then
   echo "waiting $youtubedl_interval.."
-  sleep $youtubedl_interval
+  sleep "$youtubedl_interval"
 else
   echo "youtubedl_interval is set to 'false', container will now exit."
   s6-svscanctl -t '/var/run/s6/services'

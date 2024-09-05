@@ -4,9 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29e26120-8f0a-49a2-b7bc-56e9343f81ce" name="Changes" comment="Release: v2024.09.07">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="29e26120-8f0a-49a2-b7bc-56e9343f81ce" name="Changes" comment="Release: v2024.09.08">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/push-release-version-image.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/push-release-version-image.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/release-versions/latest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/release-versions/latest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/root/app/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/root/app/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/root/app/youtube-dl/updater.sh" beforeDir="false" afterPath="$PROJECT_DIR$/root/app/youtube-dl/updater.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/root/app/youtube-dl/youtube-dl.sh" beforeDir="false" afterPath="$PROJECT_DIR$/root/app/youtube-dl/youtube-dl.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/root/config.default/args.conf" beforeDir="false" afterPath="$PROJECT_DIR$/root/config.default/args.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/root/config.default/channels.txt" beforeDir="false" afterPath="$PROJECT_DIR$/root/config.default/channels.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/root/config.default/format" beforeDir="false" afterPath="$PROJECT_DIR$/root/config.default/format" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/root/etc/cont-init.d/05-default-confs" beforeDir="false" afterPath="$PROJECT_DIR$/root/etc/cont-init.d/05-default-confs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/root/etc/cont-init.d/10-update-args" beforeDir="false" afterPath="$PROJECT_DIR$/root/etc/cont-init.d/10-update-args" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/root/etc/cont-init.d/90-user-permissions" beforeDir="false" afterPath="$PROJECT_DIR$/root/etc/cont-init.d/90-user-permissions" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/root/etc/cont-init.d/99-init.d-finish" beforeDir="false" afterPath="$PROJECT_DIR$/root/etc/cont-init.d/99-init.d-finish" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/root/etc/services.d/updater/run" beforeDir="false" afterPath="$PROJECT_DIR$/root/etc/services.d/updater/run" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/root/etc/services.d/youtube-dl/run" beforeDir="false" afterPath="$PROJECT_DIR$/root/etc/services.d/youtube-dl/run" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +41,9 @@
     &quot;accountId&quot;: &quot;c97ba068-50f1-4ae9-a900-e598c2108d9e&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/root/etc/cont-init.d/05-default-confs" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -210,8 +226,20 @@
       <option name="project" value="LOCAL" />
       <updated>1725532757344</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Release: v2024.09.08">
+      <option name="closed" value="true" />
+      <created>1725541375829</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1725541375829</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="Dockerfile" />
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.conf" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -236,6 +264,7 @@
     <MESSAGE value="Release: v2024.09.05" />
     <MESSAGE value="Release: v2024.09.06" />
     <MESSAGE value="Release: v2024.09.07" />
-    <option name="LAST_COMMIT_MESSAGE" value="Release: v2024.09.07" />
+    <MESSAGE value="Release: v2024.09.08" />
+    <option name="LAST_COMMIT_MESSAGE" value="Release: v2024.09.08" />
   </component>
 </project>
