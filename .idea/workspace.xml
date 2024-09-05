@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="29e26120-8f0a-49a2-b7bc-56e9343f81ce" name="Changes" comment="Release: v2024.09.04" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;cruix89&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/cruix89/cruix-video-archiver.git&quot;,
+    &quot;accountId&quot;: &quot;c97ba068-50f1-4ae9-a900-e598c2108d9e&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2lR9YiTFAzxQCouyFNkdig9tTZc" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/rafae/PycharmProjects/cruix-video-archiver/root/etc/services.d/yt-dlp-batch-check",
+    "two.files.diff.last.used.file": "C:/Users/rafae/PycharmProjects/cruix-video-archiver/root/app/youtube-dl/temp.sh"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\rafae\PycharmProjects\cruix-video-archiver\root\etc\services.d\yt-dlp-batch-check" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-98f27166c754-ba05f1cad1b1-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.21829.153" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="29e26120-8f0a-49a2-b7bc-56e9343f81ce" name="Changes" comment="" />
+      <created>1725132071335</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1725132071335</updated>
+    </task>
+    <task id="LOCAL-00001" summary="send">
+      <option name="closed" value="true" />
+      <created>1725135405329</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1725135405329</updated>
+    </task>
+    <task id="LOCAL-00002" summary="release update">
+      <option name="closed" value="true" />
+      <created>1725197800986</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1725197800986</updated>
+    </task>
+    <task id="LOCAL-00003" summary="link analyzer implementation (beta-test)">
+      <option name="closed" value="true" />
+      <created>1725227175388</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1725227175388</updated>
+    </task>
+    <task id="LOCAL-00004" summary="link analyzer implementation (beta-test)">
+      <option name="closed" value="true" />
+      <created>1725311828540</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1725311828540</updated>
+    </task>
+    <task id="LOCAL-00005" summary="download checker develop (beta-test)">
+      <option name="closed" value="true" />
+      <created>1725364120524</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1725364120524</updated>
+    </task>
+    <task id="LOCAL-00006" summary="download checker develop (beta-test)">
+      <option name="closed" value="true" />
+      <created>1725403480276</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1725403480276</updated>
+    </task>
+    <task id="LOCAL-00007" summary="download checker develop (beta-test)">
+      <option name="closed" value="true" />
+      <created>1725405144094</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1725405144095</updated>
+    </task>
+    <task id="LOCAL-00008" summary="download checker develop (beta-test)">
+      <option name="closed" value="true" />
+      <created>1725409362721</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1725409362721</updated>
+    </task>
+    <task id="LOCAL-00009" summary="download checker develop (beta-test)">
+      <option name="closed" value="true" />
+      <created>1725411432378</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1725411432378</updated>
+    </task>
+    <task id="LOCAL-00010" summary="download checker develop (beta-test)">
+      <option name="closed" value="true" />
+      <created>1725412891998</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1725412891998</updated>
+    </task>
+    <task id="LOCAL-00011" summary="release 2024.09.04">
+      <option name="closed" value="true" />
+      <created>1725484310000</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1725484310000</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Release: v2024.08.06">
+      <option name="closed" value="true" />
+      <created>1725486203625</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1725486203625</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Release: v2024.08.06">
+      <option name="closed" value="true" />
+      <created>1725486339109</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1725486339109</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Release: v2024.08.06.">
+      <option name="closed" value="true" />
+      <created>1725486366464</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1725486366464</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Release: v2024.09.04">
+      <option name="closed" value="true" />
+      <created>1725486425123</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1725486425123</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="send" />
+    <MESSAGE value="release update" />
+    <MESSAGE value="link analyzer implementation (beta-test)" />
+    <MESSAGE value="download checker develop (beta-test)" />
+    <MESSAGE value="release 2024.09.04" />
+    <MESSAGE value="Release: v2024.08.06" />
+    <MESSAGE value="Release: v2024.08.06." />
+    <MESSAGE value="Release: v2024.09.04" />
+    <option name="LAST_COMMIT_MESSAGE" value="Release: v2024.09.04" />
+  </component>
+</project>
