@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29e26120-8f0a-49a2-b7bc-56e9343f81ce" name="Changes" comment="Release: v2024.09.04" />
+    <list default="true" id="29e26120-8f0a-49a2-b7bc-56e9343f81ce" name="Changes" comment="Release: v2024.09.05" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -36,6 +36,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/rafae/PycharmProjects/cruix-video-archiver/root/etc/services.d/yt-dlp-batch-check",
     "two.files.diff.last.used.file": "C:/Users/rafae/PycharmProjects/cruix-video-archiver/root/app/youtube-dl/temp.sh"
@@ -182,7 +183,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725486425123</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Release: v2024.09.05">
+      <option name="closed" value="true" />
+      <created>1725531768420</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1725531768421</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -205,6 +214,7 @@
     <MESSAGE value="Release: v2024.08.06" />
     <MESSAGE value="Release: v2024.08.06." />
     <MESSAGE value="Release: v2024.09.04" />
-    <option name="LAST_COMMIT_MESSAGE" value="Release: v2024.09.04" />
+    <MESSAGE value="Release: v2024.09.05" />
+    <option name="LAST_COMMIT_MESSAGE" value="Release: v2024.09.05" />
   </component>
 </project>
