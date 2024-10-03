@@ -98,9 +98,9 @@ docker run -d \
 
 # Configure cruix-video-archiver
 
-* **channels.txt**
+* **links.txt**
 
-    File location: `/config/channels.txt`.  
+    File location: `/config/links.txt`.  
     This is where you input all the YouTube channels (or any valid URL) you want to have videos downloaded from.
     ```
     # One per line
@@ -126,8 +126,8 @@ docker run -d \
     https://www.youtube.com/playlist?list=D9sLB5EVaCarZ7lbpQfGch3jJuYCRt | --playlist-end '-1' --no-playlist-reverse
     ```
     Adding with Docker:  
-    `docker exec youtube-dl bash -c 'echo "# NAME" >> ./channels.txt'`  
-    `docker exec youtube-dl bash -c 'echo "URL" >> ./channels.txt'`
+    `docker exec youtube-dl bash -c 'echo "# NAME" >> ./links.txt'`  
+    `docker exec youtube-dl bash -c 'echo "URL" >> ./links.txt'`
 
     It is recommended to use the UCID-based URLs, they look like: `/channel/UC0vaVaSyV14uvJ4hEZDOl0Q`, as the other ones might get changed.
     You find the UCID-based URL by going to a video and clicking on the uploader.
@@ -154,7 +154,7 @@ docker run -d \
 
     **Unsupported arguments**
     * `--config-location`, hardcoded to `/config/args.conf`.
-    * `--batch-file`, hardcoded to `/config/channels.txt`.
+    * `--batch-file`, hardcoded to `/config/links.txt`.
 
     **Default arguments**
     * `--output '/downloads/%(uploader)s/%(title)s.%(ext)s'`, makes youtube-dl create separate folders for each channel and use the video title for the filename.

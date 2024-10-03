@@ -1,18 +1,27 @@
 #!/usr/bin/with-contenv sh
 
+# set default quality if youtubedl_quality is not set
+: "${youtubedl_quality:=best}"
+
 if ! [ -f "/config/args.conf" ]
 then
   echo "[default-confs] restoring default 'args.conf'."
   cp /config.default/args.conf /config/
 fi
 
-if ! [ -f "/config/channels.txt" ]
+if ! [ -f "/config/links.txt" ]
 then
-  echo "[default-confs] restoring default 'channels.txt'."
-  cp /config.default/channels.txt /config/
+  echo "[default-confs] restoring default 'links.txt'."
+  cp /config.default/links.txt /config/
 fi
 
 ln -fs /config/args.conf /etc/yt-dlp.conf
+
+# check if youtubedl_quality is set
+if [ -z "${youtubedl_quality}" ]; then
+  echo "[error] 'youtubedl_quality' is not set. Please set it before running the script."
+  exit 1
+fi
 
 # shellcheck disable=SC2016
 sed -i -E 's!\$youtubedl_quality!'"${youtubedl_quality}"'!g' /config.default/format

@@ -1,5 +1,12 @@
 #!/usr/bin/with-contenv bash
 
+# set the variable to false by default, or get its value from an environment variable
+youtubedl_lockfile=${youtubedl_lockfile:-false}
+youtubedl_debug=${youtubedl_debug:-false}
+youtubedl_subscriptions=${youtubedl_subscriptions:-false}
+youtubedl_watchlater=${youtubedl_watchlater:-false}
+youtubedl_interval=${youtubedl_interval:-false}
+
 if $youtubedl_debug; then youtubedl_args_verbose=true; else youtubedl_args_verbose=false; fi
 if grep -qPe '^(--output |-o ).*\$\(' '/config/args.conf'; then youtubedl_args_output_expand=true; else youtubedl_args_output_expand=false; fi
 if grep -qPe '^(--format |-f )' '/config/args.conf'; then youtubedl_args_format=true; else youtubedl_args_format=false; fi
@@ -8,7 +15,7 @@ if grep -qPe '^--download-archive ' '/config/args.conf'; then youtubedl_args_dow
 youtubedl_binary='yt-dlp'
 exec="$youtubedl_binary"
 exec+=" --config-location '/config/args.conf'"
-exec+=" --batch-file '/tmp/urls'"; (cat '/config/channels.txt'; echo '') > '/tmp/urls.temp'
+exec+=" --batch-file '/tmp/urls'"; (cat '/config/links.txt'; echo '') > '/tmp/urls.temp'
 if $youtubedl_args_verbose; then exec+=" --verbose"; fi
 if $youtubedl_args_output_expand; then exec+=" $(grep -Pe '^(--output |-o ).*\$\(' '/config/args.conf')"; fi
 if [ -f '/config/cookies.txt' ]; then exec+=" --cookies '/config/cookies.txt'"; fi
@@ -17,8 +24,7 @@ if $youtubedl_watchlater; then echo ":ytwatchlater | --playlist-end '-1' --no-pl
 if ! $youtubedl_args_format; then exec+=" --format '$(cat '/config.default/format')'"; fi
 if ! $youtubedl_args_download_archive; then exec+=" --download-archive '/config/archive.txt'"; fi
 
-if [ -f '/config/pre-execution.sh' ]
-then
+if [ -f '/config/pre-execution.sh' ]; then
   echo '[pre-execution] running pre-execution script...'
   bash '/config/pre-execution.sh'
   echo '[pre-execution] finished pre-execution script.'
@@ -29,13 +35,13 @@ youtubedl_version="$($youtubedl_binary --version)"
 youtubedl_last_run_time="$(date '+%s')"
 echo ''; echo "$(date '+%Y-%m-%d %H:%M:%S') - starting execution"
 
-if $youtubedl_lockfile; then touch '/downloads/.youtubedl-running' && rm -f '/downloads/.youtubedl-completed'; fi
+if $youtubedl_lockfile; then
+    touch '/downloads/.youtubedl-running' && rm -f '/downloads/.youtubedl-completed'
+fi
 
-while [ -f '/tmp/urls.temp' ]
-do
+while [ -f '/tmp/urls.temp' ]; do
   extra_url_args=''
-  if grep -qPe '\|' '/tmp/urls.temp'
-  then
+  if grep -qPe '\|' '/tmp/urls.temp'; then
     grep -m 1 -nPe '\|' '/tmp/urls.temp' > '/tmp/urls'
     sed -i -E "$(grep -oPe '^[0-9]+' /tmp/urls)d" '/tmp/urls.temp'
     extra_url_args="$(grep -oPe '.*?\|\K.*' '/tmp/urls')"
@@ -47,17 +53,19 @@ do
   rm -f '/tmp/urls'
 done
 
-if $youtubedl_lockfile; then touch '/downloads/.youtubedl-completed' && rm -f '/downloads/.youtubedl-running'; fi
-
-if [ $(( ($(date '+%s') - $youtubedl_last_run_time) / 60 )) -ge 2 ]
-then
-  echo ''; echo "$(date '+%Y-%m-%d %H:%M:%S') - execution took $(( ($(date '+%s') - $youtubedl_last_run_time) / 60 )) minutes"
-else
-  echo ''; echo "$(date '+%Y-%m-%d %H:%M:%S') - execution took $(( ($(date '+%s') - $youtubedl_last_run_time) )) seconds"
+if $youtubedl_lockfile; then
+    touch '/downloads/.youtubedl-completed' && rm -f '/downloads/.youtubedl-running'
 fi
 
-if [ -f '/config/post-execution.sh' ]
-then
+# Correct arithmetic checks
+elapsed_time=$(( $(date '+%s') - youtubedl_last_run_time ))
+if (( elapsed_time / 60 >= 2 )); then
+  echo ''; echo "$(date '+%Y-%m-%d %H:%M:%S') - execution took $(( elapsed_time / 60 )) minutes"
+else
+  echo ''; echo "$(date '+%Y-%m-%d %H:%M:%S') - execution took $elapsed_time seconds"
+fi
+
+if [ -f '/config/post-execution.sh' ]; then
   echo '[post-execution] running post-execution script...'
   bash '/config/post-execution.sh'
   echo '[post-execution] finished post-execution script.'
@@ -65,8 +73,7 @@ fi
 
 echo "$youtubedl_binary version: $youtubedl_version"
 
-if [ "$youtubedl_interval" != 'false' ]
-then
+if [ "$youtubedl_interval" != 'false' ]; then
   echo "waiting $youtubedl_interval.."
   sleep "$youtubedl_interval"
 else
