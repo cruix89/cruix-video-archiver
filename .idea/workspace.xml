@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29e26120-8f0a-49a2-b7bc-56e9343f81ce" name="Changes" comment="Release: v2024.10.20">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/root/app/extended-scripts/loudnorm.sh" beforeDir="false" afterPath="$PROJECT_DIR$/root/app/extended-scripts/loudnorm.sh" afterDir="false" />
-    </list>
+    <list default="true" id="29e26120-8f0a-49a2-b7bc-56e9343f81ce" name="Changes" comment="Release: v2024.10.21" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -237,7 +234,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729359243979</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Release: v2024.10.21">
+      <option name="closed" value="true" />
+      <created>1729362582727</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1729362582727</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -270,6 +275,7 @@
     <MESSAGE value="Release: v2024.09.08" />
     <MESSAGE value="Release: v2024.10.19" />
     <MESSAGE value="Release: v2024.10.20" />
-    <option name="LAST_COMMIT_MESSAGE" value="Release: v2024.10.20" />
+    <MESSAGE value="Release: v2024.10.21" />
+    <option name="LAST_COMMIT_MESSAGE" value="Release: v2024.10.21" />
   </component>
 </project>
