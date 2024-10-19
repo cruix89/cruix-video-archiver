@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29e26120-8f0a-49a2-b7bc-56e9343f81ce" name="Changes" comment="Release: v2024.09.08" />
+    <list default="true" id="29e26120-8f0a-49a2-b7bc-56e9343f81ce" name="Changes" comment="Release: v2024.10.19" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,12 +19,12 @@
     &quot;assignee&quot;: &quot;cruix89&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/cruix89/cruix-video-archiver.git",
-    "accountId": "950f2c52-de3d-4085-888d-69ae230828c1"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/cruix89/cruix-video-archiver.git&quot;,
+    &quot;accountId&quot;: &quot;950f2c52-de3d-4085-888d-69ae230828c1&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/root/etc/cont-init.d/05-default-confs" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -218,7 +218,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725541375829</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Release: v2024.10.19">
+      <option name="closed" value="true" />
+      <created>1729352110730</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1729352110730</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -249,6 +257,7 @@
     <MESSAGE value="Release: v2024.09.06" />
     <MESSAGE value="Release: v2024.09.07" />
     <MESSAGE value="Release: v2024.09.08" />
-    <option name="LAST_COMMIT_MESSAGE" value="Release: v2024.09.08" />
+    <MESSAGE value="Release: v2024.10.19" />
+    <option name="LAST_COMMIT_MESSAGE" value="Release: v2024.10.19" />
   </component>
 </project>
