@@ -105,7 +105,7 @@ main() {
     done
 
     # final summary
-    echo -e "all files have been encoded and sound normalized successfully.\n"
+    echo -e "all files have been encoded and normalized successfully.\n"
 }
 
 main
