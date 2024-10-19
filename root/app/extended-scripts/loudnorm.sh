@@ -38,21 +38,21 @@ process_file() {
 
     # FFMPEG command to process the file
     {
-        # Step 1: Normalize the audio
+        # step 1: normalize the audio
         ffmpeg -y -i "$src_file" -af "loudnorm=I=-16:TP=-1:LRA=11" -vn "$output_file.wav"
         local exit_code_audio=$?
 
-        # Step 2: Re-encode the video
+        # step 2: re-encode the video
         ffmpeg -y -i "$src_file" -c:v libx265 -preset slow -crf 23 -an "$output_file.mp4"
         local exit_code_video=$?
 
-        # Step 3: Combine video and normalized audio
+        # step 3: combine video and normalized audio
         ffmpeg -y -i "$output_file.mp4" -i "$output_file.wav" -c:v copy -c:a aac -strict experimental "${output_file}_x265.mp4"
         local exit_code_combine=$?
 
     } &>> "$log_file"
 
-    # Check the exit codes of all three stages
+    # check the exit codes of all three stages
     if [[ -f "${output_file}_x265.mp4" && $exit_code_audio -eq 0 && $exit_code_video -eq 0 && $exit_code_combine -eq 0 ]]; then
         # delete the original file
         rm -f "$src_file"
@@ -61,6 +61,10 @@ process_file() {
 
         save_to_normalized_list "${src_file%.*}.mp4"
         echo "processed and replaced: ${src_file%.*}.mp4"
+
+        # clean up the cache directory after processing
+        rm -f "$cache_dir"/*
+        echo "cache directory cleaned: $cache_dir"
     else
         echo "$(date '+%Y-%m-%d %H:%M:%S') - error processing file: $src_file" >> "$log_file"
     fi
@@ -101,7 +105,7 @@ main() {
     done
 
     # final summary
-    echo -e "all files have been processed and normalized successfully.\n"
+    echo -e "all files have been encoded and sound normalized successfully.\n"
 }
 
 main
