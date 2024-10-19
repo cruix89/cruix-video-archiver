@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29e26120-8f0a-49a2-b7bc-56e9343f81ce" name="Changes" comment="Release: v2024.10.22" />
+    <list default="true" id="29e26120-8f0a-49a2-b7bc-56e9343f81ce" name="Changes" comment="Release: v2024.10.23" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -250,7 +250,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729363417693</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Release: v2024.10.23">
+      <option name="closed" value="true" />
+      <created>1729364352635</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1729364352635</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -285,6 +293,7 @@
     <MESSAGE value="Release: v2024.10.20" />
     <MESSAGE value="Release: v2024.10.21" />
     <MESSAGE value="Release: v2024.10.22" />
-    <option name="LAST_COMMIT_MESSAGE" value="Release: v2024.10.22" />
+    <MESSAGE value="Release: v2024.10.23" />
+    <option name="LAST_COMMIT_MESSAGE" value="Release: v2024.10.23" />
   </component>
 </project>

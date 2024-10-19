@@ -101,7 +101,7 @@ main() {
     done
 
     # final summary
-    echo "all files have been processed and normalized successfully.\n"
+    echo -e "all files have been processed and normalized successfully.\n"
 }
 
 main
