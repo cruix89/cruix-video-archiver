@@ -37,20 +37,30 @@ process_file() {
     output_file="${cache_dir}/$(basename "${src_file%.*}")"
 
     # FFMPEG command to process the file
-    ffmpeg -y -i "$src_file" -vf "loudnorm=I=-16:TP=-1:LRA=11:print_format=summary" -c:v libx265 -preset slow -crf 23 "$output_file.mp4" &>> "$log_file"
+    {
+        # Step 1: Normalize the audio
+        ffmpeg -y -i "$src_file" -af "loudnorm=I=-16:TP=-1:LRA=11" -vn "$output_file.wav"
+        local exit_code_audio=$?
 
-    # capture the exit code of ffmpeg
-    local exit_code=$?
+        # Step 2: Re-encode the video
+        ffmpeg -y -i "$src_file" -c:v libx265 -preset slow -crf 23 -an "$output_file.mp4"
+        local exit_code_video=$?
 
-    # check if the output file exists and if the exit code is 0
-    if [[ -f "$output_file.mp4" && $exit_code -eq 0 ]]; then
+        # Step 3: Combine video and normalized audio
+        ffmpeg -y -i "$output_file.mp4" -i "$output_file.wav" -c:v copy -c:a aac -strict experimental "${output_file}_x265.mp4"
+        local exit_code_combine=$?
+
+    } &>> "$log_file"
+
+    # Check the exit codes of all three stages
+    if [[ -f "${output_file}_x265.mp4" && $exit_code_audio -eq 0 && $exit_code_video -eq 0 && $exit_code_combine -eq 0 ]]; then
         # delete the original file
         rm -f "$src_file"
         # move the normalized file to the original path with .mp4 extension
-        mv "$output_file.mp4" "${src_file%.*}.mp4"
+        mv "${output_file}_x265.mp4" "${src_file%.*}_x265.mp4"
 
-        save_to_normalized_list "${src_file%.*}.mp4"
-        echo "processed and replaced: ${src_file%.*}.mp4"
+        save_to_normalized_list "${src_file%.*}_x265.mp4"
+        echo "processed and replaced: ${src_file%.*}_x265.mp4"
     else
         echo "$(date '+%Y-%m-%d %H:%M:%S') - error processing file: $src_file" >> "$log_file"
     fi
