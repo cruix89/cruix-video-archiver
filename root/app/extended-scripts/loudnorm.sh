@@ -57,10 +57,10 @@ process_file() {
         # delete the original file
         rm -f "$src_file"
         # move the normalized file to the original path with .mp4 extension
-        mv "${output_file}_x265.mp4" "${src_file%.*}_x265.mp4"
+        mv "${output_file}_x265.mp4" "${src_file%.*}.mp4"
 
-        save_to_normalized_list "${src_file%.*}_x265.mp4"
-        echo "processed and replaced: ${src_file%.*}_x265.mp4"
+        save_to_normalized_list "${src_file%.*}.mp4"
+        echo "processed and replaced: ${src_file%.*}.mp4"
     else
         echo "$(date '+%Y-%m-%d %H:%M:%S') - error processing file: $src_file" >> "$log_file"
     fi
