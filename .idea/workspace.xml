@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="29e26120-8f0a-49a2-b7bc-56e9343f81ce" name="Changes" comment="Release: v2024.10.26">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/root/app/extended-scripts/loudnorm.sh" beforeDir="false" afterPath="$PROJECT_DIR$/root/app/extended-scripts/loudnorm.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/root/app/extended-scripts/loudnorm.sh" beforeDir="false" afterPath="$PROJECT_DIR$/root/app/extended-scripts/ffmpeg_encoder_loudnorm.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/root/config.default/post-execution.sh" beforeDir="false" afterPath="$PROJECT_DIR$/root/config.default/post-execution.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/root/etc/cont-init.d/90-user-permissions" beforeDir="false" afterPath="$PROJECT_DIR$/root/etc/cont-init.d/90-user-permissions" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +27,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/cruix89/cruix-video-archiver.git&quot;,
-    &quot;accountId&quot;: &quot;81e552a7-187d-4e82-a4be-ac8e2a411202&quot;
+    &quot;accountId&quot;: &quot;12711203-72ed-441b-b5a0-4ea1ea4b0d13&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
@@ -56,7 +58,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-0e3be3396995-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.23339.19" />
+        <option value="bundled-python-sdk-d7ad00fb9fc3-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.23726.102" />
       </set>
     </attachedChunks>
   </component>

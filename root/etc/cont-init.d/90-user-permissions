@@ -12,4 +12,4 @@ chown -R abc:abc /root
 chmod +x /app/youtube-dl/updater.sh
 chmod +x /app/youtube-dl/youtube-dl.sh
 chmod +x /config/post-execution.sh
-chmod +x /app/extended-scripts/loudnorm.sh
+chmod +x /app/extended-scripts/ffmpeg_encoder_loudnorm.sh

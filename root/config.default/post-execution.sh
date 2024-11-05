@@ -28,7 +28,7 @@ if [ -d "$downloads_dir" ]; then
 
   sleep '5'
   umask "$UMASK"
-  /app/extended-scripts/loudnorm.sh
+  /app/extended-scripts/ffmpeg_encoder_loudnorm.sh
 
   sleep '5'
   find "$downloads_dir" -mindepth 1 -type d -empty -delete

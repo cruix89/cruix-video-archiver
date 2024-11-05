@@ -4,6 +4,7 @@
 normalized_log_dir="${normalized_log_dir:-/config/logs}"
 normalized_list_file="${normalized_list_file:-/config/loudnorm_cache.txt}"
 cache_dir="/config/cache"
+failed_log_file="/config/loudnorm_failed_files_cache.txt"  # log file for failed files
 
 # function to check if ffmpeg is installed
 check_ffmpeg() {
@@ -27,6 +28,12 @@ save_to_normalized_list() {
     echo "$1" >> "$normalized_list_file"
 }
 
+# function to log a failed file
+log_failed_file() {
+    local src_file="$1"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - failed processing file: $src_file" >> "$failed_log_file"
+}
+
 # function to process the video file
 process_file() {
     local src_file="$1"
@@ -39,15 +46,15 @@ process_file() {
     # FFMPEG command to process the file
     {
         # step 1: normalize the audio
-        ffmpeg -y -threads 4 -i "$src_file" -af "loudnorm=I=-16:TP=-1:LRA=11" -vn "$output_file.wav"
+        ffmpeg -y -threads 3 -i "$src_file" -af "loudnorm=I=-16:TP=-1:LRA=11" -vn "$output_file.wav"
         local exit_code_audio=$?
 
         # step 2: re-encode the video
-        ffmpeg -y -threads 4 -i "$src_file" -c:v libx265 -preset slow -crf 23 -an "$output_file.mp4"
+        ffmpeg -y -threads 3 -i "$src_file" -c:v libx265 -preset slow -crf 23 -an "$output_file.mp4"
         local exit_code_video=$?
 
         # step 3: combine video and normalized audio
-        ffmpeg -y -threads 4 -i "$output_file.mp4" -i "$output_file.wav" -c:v copy -c:a aac -strict experimental "${output_file}_x265.mp4"
+        ffmpeg -y -threads 3 -i "$output_file.mp4" -i "$output_file.wav" -c:v copy -c:a aac -strict experimental "${output_file}_x265.mp4"
         local exit_code_combine=$?
 
     } &>> "$log_file"
@@ -66,6 +73,8 @@ process_file() {
         rm -f "$cache_dir"/*
         echo "cache directory cleaned: $cache_dir"
     else
+        # log the failure if processing fails
+        log_failed_file "$src_file"
         echo "$(date '+%Y-%m-%d %H:%M:%S') - error processing file: $src_file" >> "$log_file"
     fi
 }
@@ -76,7 +85,6 @@ main() {
     load_normalized_list
 
     local log_file="$normalized_log_dir/loudnorm.log"
-    local skipped_files=0
 
     # ensure the cache directory exists
     if [[ ! -d "$cache_dir" ]]; then
@@ -84,28 +92,18 @@ main() {
         echo "created cache directory: $cache_dir"
     fi
 
-    while true; do
-        # collect an unnormalized video file
-        local src_file
-        src_file=$(find "/downloads" -type f \( -name "*.mp4" -o -name "*.mkv" -o -name "*.webm" -o -name "*.flv" -o -name "*.avi" -o -name "*.mov" -o -name "*.wmv" -o -name "*.mpg" -o -name "*.mpeg" -o -name "*.3gp" -o -name "*.m4v" \) ! -exec grep -qx {} "$normalized_list_file" \; -print -quit)
+    # find an unnormalized video file
+    local src_file
+    src_file=$(find "/downloads" -type f \( -name "*.mp4" -o -name "*.mkv" -o -name "*.webm" -o -name "*.flv" -o -name "*.avi" -o -name "*.mov" -o -name "*.wmv" -o -name "*.mpg" -o -name "*.mpeg" -o -name "*.3gp" -o -name "*.m4v" \) ! -exec grep -qx {} "$normalized_list_file" \; -print -quit)
 
-        # if there are no more files to process, exit the loop
-        if [[ -z "$src_file" ]]; then
-            break
-        fi
+    # if no unnormalized file is found, exit the script
+    if [[ -z "$src_file" ]]; then
+        echo "no unprocessed videos found. exiting."
+        exit 0
+    fi
 
-        # check if the file was skipped
-        if grep -qx "$src_file" "$normalized_list_file"; then
-            ((skipped_files++))
-            echo "skipped: $src_file"
-            continue
-        fi
-
-        process_file "$src_file" "$log_file"
-    done
-
-    # final summary
-    echo -e "all files have been encoded and normalized successfully.\n"
+    # process the single unnormalized file
+    process_file "$src_file" "$log_file"
 }
 
 main
