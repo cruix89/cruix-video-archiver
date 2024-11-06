@@ -80,12 +80,19 @@ RUN set -x && \
     imagemagick && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Adicionar repositórios da NVIDIA e instalar o FFmpeg com NVENC
+# Adicionar repositórios da NVIDIA e instalar FFmpeg com NVENC
 RUN set -x && \
+    # Baixar o repositório da NVIDIA
+    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin && \
+    mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600 && \
+    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.repo && \
+    mv cuda-ubuntu2004.repo /etc/apt/sources.list.d && \
+    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda.asc && \
+    apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda.asc && \
     apt-get update && \
     apt-get install -y \
     ffmpeg \
-    nvidia-cuda-toolkit \
+    cuda-toolkit-11-7 \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Verificar se o FFMPEG tem suporte a NVENC
