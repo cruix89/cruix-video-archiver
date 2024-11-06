@@ -46,15 +46,15 @@ process_file() {
     # FFMPEG command to process the file
     {
         # step 1: normalize the audio
-        ffmpeg -y -threads 3 -i "$src_file" -af "loudnorm=I=-16:TP=-1:LRA=11" -vn "$output_file.wav"
+        ffmpeg -y -threads 1 -i "$src_file" -af "loudnorm=I=-16:TP=-1:LRA=11" -vn "$output_file.wav"
         local exit_code_audio=$?
 
         # step 2: re-encode the video
-        ffmpeg -y -threads 3 -i "$src_file" -c:v libx265 -preset slow -crf 23 -an "$output_file.mp4"
+        ffmpeg -y -threads 1 -i "$src_file" -c:v libx265 -preset slow -crf 23 -an "$output_file.mp4"
         local exit_code_video=$?
 
         # step 3: combine video and normalized audio
-        ffmpeg -y -threads 3 -i "$output_file.mp4" -i "$output_file.wav" -c:v copy -c:a aac -strict experimental "${output_file}_x265.mp4"
+        ffmpeg -y -threads 1 -i "$output_file.mp4" -i "$output_file.wav" -c:v copy -c:a aac -strict experimental "${output_file}_x265.mp4"
         local exit_code_combine=$?
 
     } &>> "$log_file"

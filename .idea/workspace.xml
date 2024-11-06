@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29e26120-8f0a-49a2-b7bc-56e9343f81ce" name="Changes" comment="Release: v2024.10.26">
+    <list default="true" id="29e26120-8f0a-49a2-b7bc-56e9343f81ce" name="Changes" comment="Release: v2024.10.27">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/root/app/extended-scripts/loudnorm.sh" beforeDir="false" afterPath="$PROJECT_DIR$/root/app/extended-scripts/ffmpeg_encoder_loudnorm.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/root/config.default/post-execution.sh" beforeDir="false" afterPath="$PROJECT_DIR$/root/config.default/post-execution.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/root/etc/cont-init.d/90-user-permissions" beforeDir="false" afterPath="$PROJECT_DIR$/root/etc/cont-init.d/90-user-permissions" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -287,7 +284,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729373153055</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Release: v2024.10.27">
+      <option name="closed" value="true" />
+      <created>1730848597876</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1730848597876</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -326,6 +331,7 @@
     <MESSAGE value="Release: v2024.10.24" />
     <MESSAGE value="Release: v2024.10.25" />
     <MESSAGE value="Release: v2024.10.26" />
-    <option name="LAST_COMMIT_MESSAGE" value="Release: v2024.10.26" />
+    <MESSAGE value="Release: v2024.10.27" />
+    <option name="LAST_COMMIT_MESSAGE" value="Release: v2024.10.27" />
   </component>
 </project>
