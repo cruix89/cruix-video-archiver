@@ -60,6 +60,7 @@ RUN set -x && \
         libglib2.0-dev \
         libmagickwand-dev \
         imagemagick && \
+    python3 -m pip install --upgrade pip && \
     python3 -m pip --no-cache-dir install -r /app/requirements.txt && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -76,7 +77,7 @@ RUN set -x && \
     tar -xzf /tmp/s6-overlay.tar.gz -C / && \
     rm -rf /tmp/*
 
-# install yt-dlp
+# install yt-dlp (removendo a versão específica caso ela não esteja disponível)
 RUN set -x && \
     python3 -m pip --no-cache-dir install yt-dlp
 
