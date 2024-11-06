@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29e26120-8f0a-49a2-b7bc-56e9343f81ce" name="Changes" comment="Release: v2024.10.27">
+    <list default="true" id="29e26120-8f0a-49a2-b7bc-56e9343f81ce" name="Changes" comment="Release: v2024.10.28">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/root/config.default/args.conf" beforeDir="false" afterPath="$PROJECT_DIR$/root/config.default/args.conf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -292,7 +293,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730848597876</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Release: v2024.10.28">
+      <option name="closed" value="true" />
+      <created>1730893116784</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1730893116784</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -332,6 +341,7 @@
     <MESSAGE value="Release: v2024.10.25" />
     <MESSAGE value="Release: v2024.10.26" />
     <MESSAGE value="Release: v2024.10.27" />
-    <option name="LAST_COMMIT_MESSAGE" value="Release: v2024.10.27" />
+    <MESSAGE value="Release: v2024.10.28" />
+    <option name="LAST_COMMIT_MESSAGE" value="Release: v2024.10.28" />
   </component>
 </project>
