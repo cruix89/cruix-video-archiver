@@ -43,7 +43,7 @@ limit_cpu_usage() {
     cpu_usage=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}')
     while (( $(echo "$cpu_usage > $cpu_limit" | bc -l) )); do
         echo "CPU usage is above ${cpu_limit}% (${cpu_usage}%), pausing..."
-        sleep 1
+        sleep 5
         cpu_usage=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}')
     done
 }
@@ -105,7 +105,7 @@ main() {
 
     # if no unprocessed file is found, exit the script
     if [[ -z "$src_file" ]]; then
-        echo "no unprocessed videos found. exiting."
+        echo -e "no unprocessed videos found. exiting.\n"
         exit 0
     fi
 
