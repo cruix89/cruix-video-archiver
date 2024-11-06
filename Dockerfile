@@ -80,13 +80,12 @@ RUN set -x && \
     imagemagick && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Instalar FFMPEG com suporte a NVENC
+# Adicionar repositórios da NVIDIA e instalar o FFmpeg com NVENC
 RUN set -x && \
     apt-get update && \
     apt-get install -y \
     ffmpeg \
     nvidia-cuda-toolkit \
-    nvidia-smi \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Verificar se o FFMPEG tem suporte a NVENC
