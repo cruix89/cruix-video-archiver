@@ -1,11 +1,17 @@
-# Usando uma imagem base da NVIDIA com suporte a CUDA e Ubuntu 20.04
 FROM nvidia/cuda:11.7.1-runtime-ubuntu20.04
 
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2" \
     PUID="911" \
     PGID="911" \
     UMASK="022" \
-    OPENSSL_CONF=""
+    OPENSSL_CONF="" \
+    DEBIAN_FRONTEND=noninteractive
+
+# Configurando fuso horário padrão
+RUN ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime && \
+    apt-get update && \
+    apt-get install -y tzdata && \
+    dpkg-reconfigure --frontend noninteractive tzdata
 
 # create group and user
 RUN set -x && \
