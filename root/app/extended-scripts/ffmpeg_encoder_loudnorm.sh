@@ -34,54 +34,47 @@ log_failed_file() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') - failed processing file: $src_file" >> "$failed_log_file"
 }
 
-# function to limit CPU usage dynamically
-limit_cpu_usage() {
-    local cpu_limit=70
-    local cpu_usage
-
-    # check CPU usage and pause if above the limit
-    cpu_usage=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}')
-    while (( $(echo "$cpu_usage > $cpu_limit" | bc -l) )); do
-        echo "CPU usage is above ${cpu_limit}% (${cpu_usage}%), pausing..."
-        sleep 5
-        cpu_usage=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}')
-    done
-}
-
 # function to process the video file
 process_file() {
     local src_file="$1"
     local log_file="$2"
+    # declare the variable
     local output_file
+    # assign the value separately, removing the original extension
     output_file="${cache_dir}/$(basename "${src_file%.*}")"
 
-    # step 1: normalize the audio
-    limit_cpu_usage  # check and control CPU usage
-    ffmpeg -y -threads 1 -i "$src_file" -af "loudnorm=I=-16:TP=-1:LRA=11" -vn "$output_file.wav"
-    local exit_code_audio=$?
+    # FFMPEG command to process the file
+    {
+        # step 1: normalize the audio
+        ffmpeg -y -threads 1 -i "$src_file" -af "loudnorm=I=-16:TP=-1:LRA=11" -vn "$output_file.wav"
+        local exit_code_audio=$?
 
-    # step 2: re-encode the video
-    limit_cpu_usage  # check and control CPU usage
-    ffmpeg -y -threads 1 -i "$src_file" -c:v libx265 -preset slow -crf 23 -an "$output_file.mp4"
-    local exit_code_video=$?
+        # step 2: re-encode the video
+        ffmpeg -y -threads 1 -i "$src_file" -c:v libx265 -preset slow -crf 23 -an "$output_file.mp4"
+        local exit_code_video=$?
 
-    # step 3: combine video and normalized audio
-    limit_cpu_usage  # check and control CPU usage
-    ffmpeg -y -threads 1 -i "$output_file.mp4" -i "$output_file.wav" -c:v copy -c:a aac -strict experimental "${output_file}_x265.mp4"
-    local exit_code_combine=$?
+        # step 3: combine video and normalized audio
+        ffmpeg -y -threads 1 -i "$output_file.mp4" -i "$output_file.wav" -c:v copy -c:a aac -strict experimental "${output_file}_x265.mp4"
+        local exit_code_combine=$?
+
+    } &>> "$log_file"
 
     # check the exit codes of all three stages
     if [[ -f "${output_file}_x265.mp4" && $exit_code_audio -eq 0 && $exit_code_video -eq 0 && $exit_code_combine -eq 0 ]]; then
-        rm -f "$src_file"  # delete the original file
-        mv "${output_file}_x265.mp4" "${src_file%.*}.mp4"  # move the normalized file
+        # delete the original file
+        rm -f "$src_file"
+        # move the normalized file to the original path with .mp4 extension
+        mv "${output_file}_x265.mp4" "${src_file%.*}.mp4"
 
         save_to_normalized_list "${src_file%.*}.mp4"
         echo "processed and replaced: ${src_file%.*}.mp4"
 
-        rm -f "$cache_dir"/*  # clean up the cache directory
+        # clean up the cache directory after processing
+        rm -f "$cache_dir"/*
         echo "cache directory cleaned: $cache_dir"
     else
-        log_failed_file "$src_file"  # log the failure if processing fails
+        # log the failure if processing fails
+        log_failed_file "$src_file"
         echo "$(date '+%Y-%m-%d %H:%M:%S') - error processing file: $src_file" >> "$log_file"
     fi
 }

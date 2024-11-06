@@ -1,4 +1,5 @@
-FROM debian:11-slim
+# Usando uma imagem base da NVIDIA com suporte a CUDA e Ubuntu 20.04
+FROM nvidia/cuda:11.7.1-runtime-ubuntu20.04
 
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2" \
     PUID="911" \
@@ -56,10 +57,10 @@ RUN set -x && \
     python3 -m pip --no-cache-dir install -r /app/requirements.txt && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# install FFMPEG from debian repository
+# install FFMPEG with NVENC support
 RUN set -x && \
     apt-get update && \
-    apt-get install -y ffmpeg && \
+    apt-get install -y ffmpeg nvidia-cuda-toolkit && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
