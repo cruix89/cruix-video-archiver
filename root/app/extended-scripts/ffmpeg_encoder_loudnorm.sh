@@ -20,7 +20,7 @@ load_normalized_list() {
         touch "$normalized_list_file"
     fi
     mapfile -t normalized_files < "$normalized_list_file"
-    echo -e "\nnumber of already normalized files in cache: ${#normalized_files[@]}"
+    echo -e "\nnumber of already normalized files in cache: ${#normalized_files[@]}\n"
 }
 
 # function to save to the normalized list
@@ -44,17 +44,17 @@ process_file() {
     # FFMPEG command to normalize audio, re-encode video, and combine
     {
         # step 1: normalize the audio
-        echo "Starting audio normalization for: $src_file"
+        echo -e "\n\nstarting audio normalization for: $src_file\n\n\n"
         ffmpeg -y -i "$src_file" -af "loudnorm=I=-16:TP=-1:LRA=11" -vn "$output_file.wav" | tee -a "$log_file"
         local exit_code_audio=$?
 
         # step 2: re-encode the video
-        echo "Starting video re-encoding for: $src_file"
+        echo -e "\n\n\nstarting video re-encoding for: $src_file\n\n\n"
         ffmpeg -y -i "$src_file" -c:v libx265 -preset slow -crf 23 -an "$output_file.mp4" | tee -a "$log_file"
         local exit_code_video=$?
 
         # step 3: combine video and normalized audio
-        echo "Combining video and audio for: $src_file"
+        echo -e "\n\n\ncombining video and audio for: $src_file\n\n\n"
         ffmpeg -y -i "$output_file.mp4" -i "$output_file.wav" -c:v copy -c:a aac -strict experimental "${output_file}_x265.mp4" | tee -a "$log_file"
         local exit_code_combine=$?
 
@@ -67,7 +67,7 @@ process_file() {
         save_to_normalized_list "${src_file%.*}.mp4"
         echo "processed and replaced: ${src_file%.*}.mp4"
         rm -f "$cache_dir"/*
-        echo -e "\ncache directory cleaned: $cache_dir"
+        echo -e "\ncleaning cache directory: $cache_dir"
     else
         log_failed_file "$src_file"
         echo "$(date '+%Y-%m-%d %H:%M:%S') - error processing file: $src_file" >> "$log_file"
