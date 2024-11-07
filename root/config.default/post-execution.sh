@@ -33,6 +33,8 @@ if [ -d "$downloads_dir" ]; then
   sleep '5'
   find "$downloads_dir" -mindepth 1 -type d -empty -delete
 
+  echo -e ""
+
 else
   echo -e "\noutput directory not found: $downloads_dir"
 fi

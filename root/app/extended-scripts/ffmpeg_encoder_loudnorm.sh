@@ -34,46 +34,47 @@ log_failed_file() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') - failed processing file: $src_file" >> "$failed_log_file"
 }
 
-# function to process the video file
+# function to process the video file with real-time progress display
 process_file() {
     local src_file="$1"
     local log_file="$2"
-    # declare the variable
     local output_file
-    # assign the value separately, removing the original extension
     output_file="${cache_dir}/$(basename "${src_file%.*}")"
 
-    # FFMPEG command to process the file
+    # FFMPEG command to normalize audio, re-encode video, and combine
     {
         # step 1: normalize the audio
-        ffmpeg -y -i "$src_file" -af "loudnorm=I=-16:TP=-1:LRA=11" -vn "$output_file.wav"
+        echo "starting audio normalization for: $src_file"
+        ffmpeg -y -i "$src_file" -af "loudnorm=I=-16:TP=-1:LRA=11" -vn "$output_file.wav" 2>&1 | while read -r line; do
+            echo "$line"
+        done
         local exit_code_audio=$?
 
         # step 2: re-encode the video
-        ffmpeg -y -i "$src_file" -c:v libx265 -preset slow -crf 23 -an "$output_file.mp4"
+        echo "starting video re-encoding for: $src_file"
+        ffmpeg -y -i "$src_file" -c:v libx265 -preset slow -crf 23 -an "$output_file.mp4" 2>&1 | while read -r line; do
+            echo "$line"
+        done
         local exit_code_video=$?
 
         # step 3: combine video and normalized audio
-        ffmpeg -y -i "$output_file.mp4" -i "$output_file.wav" -c:v copy -c:a aac -strict experimental "${output_file}_x265.mp4"
+        echo "combining video and audio for: $src_file"
+        ffmpeg -y -i "$output_file.mp4" -i "$output_file.wav" -c:v copy -c:a aac -strict experimental "${output_file}_x265.mp4" 2>&1 | while read -r line; do
+            echo "$line"
+        done
         local exit_code_combine=$?
 
     } &>> "$log_file"
 
     # check the exit codes of all three stages
     if [[ -f "${output_file}_x265.mp4" && $exit_code_audio -eq 0 && $exit_code_video -eq 0 && $exit_code_combine -eq 0 ]]; then
-        # delete the original file
         rm -f "$src_file"
-        # move the normalized file to the original path with .mp4 extension
         mv "${output_file}_x265.mp4" "${src_file%.*}.mp4"
-
         save_to_normalized_list "${src_file%.*}.mp4"
         echo "processed and replaced: ${src_file%.*}.mp4"
-
-        # clean up the cache directory after processing
         rm -f "$cache_dir"/*
         echo -e "\ncache directory cleaned: $cache_dir"
     else
-        # log the failure if processing fails
         log_failed_file "$src_file"
         echo "$(date '+%Y-%m-%d %H:%M:%S') - error processing file: $src_file" >> "$log_file"
     fi
