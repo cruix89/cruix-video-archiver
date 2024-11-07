@@ -34,7 +34,7 @@ log_failed_file() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') - failed processing file: $src_file" >> "$failed_log_file"
 }
 
-# function to process the video file with real-time progress display
+# function to process the video file with real-time frame display
 process_file() {
     local src_file="$1"
     local log_file="$2"
@@ -44,30 +44,20 @@ process_file() {
     # FFMPEG command to normalize audio, re-encode video, and combine
     {
         # step 1: normalize the audio
-        echo "starting audio normalization for: $src_file"
-        ffmpeg -y -i "$src_file" -af "loudnorm=I=-16:TP=-1:LRA=11" -vn "$output_file.wav" 2>&1 | while read -r line; do
-            echo "$line"
-        done
-        local exit_code_audio=$?
+        echo "Starting audio normalization for: $src_file"
+        ffmpeg -y -i "$src_file" -af "loudnorm=I=-16:TP=-1:LRA=11" -vn "$output_file.wav" | tee -a "$log_file" | grep --line-buffered "frame=" | sed -u 's/.*frame= *//'
 
         # step 2: re-encode the video
-        echo "starting video re-encoding for: $src_file"
-        ffmpeg -y -i "$src_file" -c:v libx265 -preset slow -crf 23 -an "$output_file.mp4" 2>&1 | while read -r line; do
-            echo "$line"
-        done
-        local exit_code_video=$?
+        echo "Starting video re-encoding for: $src_file"
+        ffmpeg -y -i "$src_file" -c:v libx265 -preset slow -crf 23 -an "$output_file.mp4" | tee -a "$log_file" | grep --line-buffered "frame=" | sed -u 's/.*frame= *//'
 
         # step 3: combine video and normalized audio
-        echo "combining video and audio for: $src_file"
-        ffmpeg -y -i "$output_file.mp4" -i "$output_file.wav" -c:v copy -c:a aac -strict experimental "${output_file}_x265.mp4" 2>&1 | while read -r line; do
-            echo "$line"
-        done
-        local exit_code_combine=$?
-
-    } &>> "$log_file"
+        echo "Combining video and audio for: $src_file"
+        ffmpeg -y -i "$output_file.mp4" -i "$output_file.wav" -c:v copy -c:a aac -strict experimental "${output_file}_x265.mp4" | tee -a "$log_file" | grep --line-buffered "frame=" | sed -u 's/.*frame= *//'
+    }
 
     # check the exit codes of all three stages
-    if [[ -f "${output_file}_x265.mp4" && $exit_code_audio -eq 0 && $exit_code_video -eq 0 && $exit_code_combine -eq 0 ]]; then
+    if [[ -f "${output_file}_x265.mp4" && $? -eq 0 ]]; then
         rm -f "$src_file"
         mv "${output_file}_x265.mp4" "${src_file%.*}.mp4"
         save_to_normalized_list "${src_file%.*}.mp4"
