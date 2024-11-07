@@ -20,7 +20,7 @@ load_normalized_list() {
         touch "$normalized_list_file"
     fi
     mapfile -t normalized_files < "$normalized_list_file"
-    echo -e "\nnumber of already normalized files in cache: ${#normalized_files[@]}\n"
+    echo -e "number of already normalized files in cache: ${#normalized_files[@]}"
 }
 
 # function to save to the normalized list
@@ -44,7 +44,7 @@ process_file() {
     # FFMPEG command to normalize audio, re-encode video, and combine
     {
         # step 1: normalize the audio
-        echo -e "\n\nstarting audio normalization for: $src_file\n\n\n"
+        echo -e "\n\n\nstarting audio normalization for: $src_file\n\n\n"
         ffmpeg -y -i "$src_file" -af "loudnorm=I=-16:TP=-1:LRA=11" -vn "$output_file.wav" | tee -a "$log_file"
         local exit_code_audio=$?
 

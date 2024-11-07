@@ -18,7 +18,7 @@ if [ -d "$downloads_dir" ]; then
   sleep '5'
   find "$downloads_dir" -mindepth 1 -type d -empty -delete
 
-  echo -e "\nexecuting ffmpeg process in your video library"
+  echo -e "\nexecuting ffmpeg's process in the video library..."
 
   # post-processing scripts in downloads folder
 
