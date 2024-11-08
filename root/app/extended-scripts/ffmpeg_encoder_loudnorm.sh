@@ -54,7 +54,7 @@ process_file() {
         local exit_code_video=$?
 
         # step 3: combine video and normalized audio
-        echo -e "\n\n\n*****   combining video and audio for: $src_file   *****\n\n\n"
+        echo -e "\n\n\n*****   merging video and audio for: $src_file   *****\n\n\n"
         ffmpeg -y -i "$output_file.mp4" -i "$output_file.wav" -c:v copy -c:a aac -strict experimental "${output_file}_x265.mp4" | tee -a "$log_file"
         local exit_code_combine=$?
 
