@@ -1,13 +1,13 @@
-# cruix89 / cruix-video-archiver-X265
-[![GitHub last commit](https://img.shields.io/github/last-commit/cruix89/cruix-video-archiver-X265?logo=github)](https://github.com/cruix89/cruix-video-archiver-X265/actions/workflows/push-unstable-image.yml/)
-[![GitHub Automated build](https://img.shields.io/github/actions/workflow/status/cruix89/cruix-video-archiver-X265/push-release-version-image.yml?logo=github)](https://github.com/cruix89/cruix-video-archiver-X265/actions/workflows/push-release-version-image.yml/)
-[![Image Size](https://img.shields.io/docker/image-size/cruix89/cruix-video-archiver-X265/latest?style=flat&logo=docker)](https://hub.docker.com/r/cruix89/cruix-video-archiver-X265/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/cruix89/cruix-video-archiver-X265?style=flat&logo=docker)](https://hub.docker.com/r/cruix89/cruix-video-archiver-X265/)
-[![Docker Stars](https://img.shields.io/docker/stars/cruix89/cruix-video-archiver-X265?style=flat&logo=docker)](https://hub.docker.com/r/cruix89/cruix-video-archiver-X265/)
+# cruix89 / cruix-video-archiver-x265
+[![GitHub last commit](https://img.shields.io/github/last-commit/cruix89/cruix-video-archiver-x265?logo=github)](https://github.com/cruix89/cruix-video-archiver-x265/actions/workflows/push-unstable-image.yml/)
+[![GitHub Automated build](https://img.shields.io/github/actions/workflow/status/cruix89/cruix-video-archiver-x265/push-release-version-image.yml?logo=github)](https://github.com/cruix89/cruix-video-archiver-x265/actions/workflows/push-release-version-image.yml/)
+[![Image Size](https://img.shields.io/docker/image-size/cruix89/cruix-video-archiver-x265/latest?style=flat&logo=docker)](https://hub.docker.com/r/cruix89/cruix-video-archiver-x265/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/cruix89/cruix-video-archiver-x265?style=flat&logo=docker)](https://hub.docker.com/r/cruix89/cruix-video-archiver-x265/)
+[![Docker Stars](https://img.shields.io/docker/stars/cruix89/cruix-video-archiver-x265?style=flat&logo=docker)](https://hub.docker.com/r/cruix89/cruix-video-archiver-x265/)
 
 **automated yt-dlp docker image for downloading YouTube subscriptions and others platforms supported by youtube-dlp**
 
-Docker Hub page [here](https://hub.docker.com/r/cruix89/cruix-video-archiver-X265).  
+Docker Hub page [here](https://hub.docker.com/r/cruix89/cruix-video-archiver-x265).  
 yt-dlp documentation [here](https://github.com/yt-dlp/yt-dlp).
 
 # Features
@@ -40,23 +40,23 @@ yt-dlp documentation [here](https://github.com/yt-dlp/yt-dlp).
 "I want to download all my subscriptions and my watch later playlist in 4k"
 ```
 docker run -d \
-    --name cruix-video-archiver-X265 \
+    --name cruix-video-archiver-x265 \
     -v youtube-dl_data:/config \
     -v <PATH>:/downloads \
     -e youtubedl_subscriptions=true \
     -e youtubedl_watchlater=true \
     -e youtubedl_quality=2160 \
-    cruix89/cruix-video-archiver-X265
+    cruix89/cruix-video-archiver-x265
 ```
 <br>
 
 "I want to download only certain channels"
 ```
 docker run -d \
-    --name cruix-video-archiver-X265 \
+    --name cruix-video-archiver-x265 \
     -v youtube-dl_data:/config \
     -v <PATH>:/downloads \
-    cruix89/cruix-video-archiver-X265
+    cruix89/cruix-video-archiver-x265
 ```
 **Explanation**
 * `-v youtube-dl_data:/config`  

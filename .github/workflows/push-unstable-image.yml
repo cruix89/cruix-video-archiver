@@ -9,7 +9,7 @@ on:
 
 env:
   IMAGE_REPO: cruix89
-  IMAGE_NAME: cruix-video-archiver-X265
+  IMAGE_NAME: cruix-video-archiver-x265
 
 jobs:
   Push-New-Unstable-Image:
