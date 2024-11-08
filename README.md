@@ -96,7 +96,7 @@ docker run -d \
     * Automatically built when a new version of yt-dlp is released.
     * Does not update.
 
-# Configure cruix-video-archiver
+# Configure cruix-video-archiver-x265
 
 * **links.txt**
 
