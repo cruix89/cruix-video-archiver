@@ -93,7 +93,7 @@ main() {
 
     # if no unprocessed file is found, exit the script
     if [[ -z "$src_file" ]]; then
-        echo -e "no unprocessed videos found. exiting.\n"
+        echo -e "\nno unprocessed videos found. exiting."
         exit 0
     fi
 
