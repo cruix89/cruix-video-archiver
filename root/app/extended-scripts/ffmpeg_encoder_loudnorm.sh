@@ -65,7 +65,7 @@ process_file() {
         rm -f "$src_file"
         mv "${output_file}_x265.mp4" "${src_file%.*}.mp4"
         save_to_normalized_list "${src_file%.*}.mp4"
-        echo "processed and replaced: ${src_file%.*}.mp4"
+        echo -e "\n\n\n*****   processed and replaced: ${src_file%.*}.mp4   *****\n\n\n"
         rm -f "$cache_dir"/*
         echo -e "\ncleaning cache directory: $cache_dir"
     else
