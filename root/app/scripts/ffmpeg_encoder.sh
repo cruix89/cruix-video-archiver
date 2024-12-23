@@ -44,19 +44,19 @@ process_file() {
     # FFMPEG command to normalize audio, re-encode video, and combine
     {
         # step 1: normalize the audio
-        echo -e "[cruix-video-archiver-hvec] Starting Audio Normalization For: $src_file . 🎵  Because Even Your Files Deserve To Hit The Right Notes! 🌟"
+        echo -e "[cruix-video-archiver-hvec] Starting Audio Normalization For: $src_file . 🎵   Because Even Your Files Deserve To Hit The Right Notes! 🌟"
         sleep 15
         ffmpeg -y -i "$src_file" -af "loudnorm=I=-16:TP=-1:LRA=11" -vn "$output_file.wav" | tee -a "$log_file"
         local exit_code_audio=$?
 
         # step 2: re-encode the video
-        echo -e "[cruix-video-archiver-hvec] Starting Video Re-Encoding For: $src_file . 🎥  The HVEC transformation is in action 🚀"
+        echo -e "[cruix-video-archiver-hvec] Starting Video Re-Encoding For: $src_file . 🎥   The HVEC transformation is in action 🚀"
         sleep 15
         ffmpeg -y -i "$src_file" -c:v libx265 -preset slow -crf 23 -an "$output_file.mp4" | tee -a "$log_file"
         local exit_code_video=$?
 
         # step 3: combine video and normalized audio
-        echo -e "[cruix-video-archiver-hvec] Merging Video and Audio For: $src_file . 🔀  Crafting the Perfect Symphony! 🛠️"
+        echo -e "[cruix-video-archiver-hvec] Merging Video and Audio For: $src_file . 🔀   Crafting the Perfect Symphony! 🛠️"
         sleep 15
         ffmpeg -y -i "$output_file.mp4" -i "$output_file.wav" -c:v copy -c:a aac -strict experimental "${output_file}_x265.mp4" | tee -a "$log_file"
         local exit_code_combine=$?
