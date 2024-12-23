@@ -5,9 +5,9 @@ if ! [ -f "/config/args.conf" ]; then
   cp /config.default/args.conf /config/
 fi
 
-if ! [ -f "/config/artists.txt" ]; then
+if ! [ -f "/config/links.txt" ]; then
   echo "[default-configs] restoring default 'links.txt'."
-  cp /config.default/artists.txt /config/
+  cp /config.default/links.txt /config/
 fi
 
 # always update the post-execution.sh script
