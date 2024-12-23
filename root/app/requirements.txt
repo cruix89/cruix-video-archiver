@@ -1,0 +1,12 @@
+uvicorn
+fastapi
+aiofiles
+Jinja2
+python-multipart
+importlib_metadata
+eyed3
+mutagen
+requests
+beautifulsoup4
+pylast
+pillow

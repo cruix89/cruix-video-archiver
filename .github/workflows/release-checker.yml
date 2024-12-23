@@ -1,0 +1,41 @@
+name: Release Checker
+
+on:
+  schedule:
+    - cron: '0 0,12 * * *'
+
+jobs:
+  Release-Checker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
+
+      - name: Fetch latest release version
+        id: fetch-release
+        run: |
+          RELEASE_VERSION=$(curl -s https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest | jq -r ".tag_name")
+          echo "$RELEASE_VERSION" > release-versions/latest.txt
+          if [ "$RELEASE_VERSION" == "null" ]; then
+            echo "FETCH_SUCCESS=false" >> $GITHUB_ENV
+          else
+            echo "FETCH_SUCCESS=true" >> $GITHUB_ENV
+          fi
+
+      - name: Check for modified files
+        id: git-check
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "MODIFIED=false" >> $GITHUB_ENV
+          else
+            echo "MODIFIED=true" >> $GITHUB_ENV
+          fi
+
+      - name: Commit latest release version
+        if: env.FETCH_SUCCESS == 'true' && env.MODIFIED == 'true'
+        run: |
+          git config --global user.name 'Release Checker'
+          git config --global user.email 'release-checker@example.com'
+          git commit -am "Release: v$(cat release-versions/latest.txt)"
+          git push
