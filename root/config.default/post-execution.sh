@@ -9,7 +9,7 @@ logs_dir="/config/logs"
 # remove cache files in the output directory and process post-processing scripts
 if [ -d "$downloads_dir" ]; then
 
-  echo -e "[cruix-video-archiver-hvec] Initiating Cleanup Protocol... Purging Cache Files From the Following Directories: /cache /logs /downloads. 🧹  ✨"
+  echo -e "[cruix-video-archiver-hvec] Initiating Cleanup Protocol... Purging Cache Files From the Following Directories: /cache /logs /downloads."
 
   sleep '5'
   mkdir -p $cache_dir
@@ -19,7 +19,7 @@ if [ -d "$downloads_dir" ]; then
   sleep '5'
   find "$downloads_dir" -mindepth 1 -type d -empty -delete
 
-  echo -e "[cruix-video-archiver-hvec] Executing FFMPEG's Process In The Video Library...  🎬 "
+  echo -e "[cruix-video-archiver-hvec] Executing FFMPEG Process In The Video Library..."
 
   # post-processing scripts in downloads folder
 
@@ -35,5 +35,5 @@ if [ -d "$downloads_dir" ]; then
   find "$downloads_dir" -mindepth 1 -type d -empty -delete
 
 else
-  echo -e "[cruix-video-archiver-hvec] Oops! Output Directory Not Found: $downloads_dir  ⚠️  "
+  echo -e "[cruix-video-archiver-hvec] Oops! Output Directory Not Found: $downloads_dir "
 fi
