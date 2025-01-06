@@ -138,11 +138,21 @@ docker run
   ```plaintext
   # CHANNEL
   https://www.youtube.com/channel/UCePOvb3aG9w
+  
+  # YTSEARCH
+  ytsearch10:funny-pranks-compilation
+  
+  # YTSEARCH TO MY CUSTOM FOLDER
+  ytsearch10:funny-pranks-compilation | --output '/downloads/pranks-videos-to-my-kids/%(title)s.%(ext)s'
   ```
   adding a new link by docker command:
   ```plaintext
   docker exec cruix-music-archiver bash -c 'echo "# CHANNEL" >> ./links.txt'
   docker exec cruix-music-archiver bash -c 'echo "https://www.youtube.com/channel/UCePOvb3aG9w" >> ./links.txt'
+  docker exec cruix-music-archiver bash -c 'echo "# YTSEARCH" >> ./links.txt'
+  docker exec cruix-music-archiver bash -c 'echo "ytsearch10:funny-pranks-compilation" >> ./links.txt'
+  docker exec cruix-music-archiver bash -c 'echo "# YTSEARCH TO MY CUSTOM FOLDER" >> ./links.txt'
+  docker exec cruix-music-archiver bash -c 'echo "ytsearch10:funny-pranks-compilation | --output '/downloads/pranks-videos-to-my-kids/%(title)s.%(ext)s'" >> ./links.txt'
   ```
 
 - **post-execution.sh**  
@@ -155,7 +165,7 @@ docker run
 
 - **`ytsearch:` function**  
 
-configuring the function ytsearch to save in the default download folder, Exemple:
+configuring the function ytsearch to save in the default download folder, this function is added in the links.txt also, Exemple:
   ```plaintext
   ytsearch10:funny-pranks-compilation
   ```
@@ -175,7 +185,7 @@ setting the custom output folder to ytsearch save your files, Exemple:
 
 - **custom output folders for any link**
 
-   its possible to configure a custom output folder for any link, Exemple:
+   it's possible to configure a custom output folder for any link, Exemple:
 ```plaintext
   https://www.youtube.com/watch?v=6VoT-KrseHA&pp=ygUHS0F | --output '/downloads/special-videos/%(title)s.%(ext)s'
   https://www.youtube.com/@anychannel | --output '/downloads/my-favorite-channels/%(title)s.%(ext)s'
@@ -212,7 +222,7 @@ setting the custom output folder to ytsearch save your files, Exemple:
 | `--embed-chapters`      | `--embed-chapters`                            | grab the chapter marks in the file                                    |
 | `--sleep-requests`      | `1.5`                                         | waits for time to prevent request blocking                            |
 | `--match-filter`        | `"!is_live"`                                  | prevent to download live streams causing a downloading loop           |
-| `--sub-langs`           | `all,-live_chat`                              | download all subs availiable to the videos                            |
+| `--sub-langs`           | `all,-live_chat`                              | download all subs available to the videos                             |
 | `--convert-subs`        | `srt`                                         | convert all downloaded subs in srt files                              |
 | `--embed-subs`          | `--embed-subs`                                | grab the subs into video file to better library management            |
  
