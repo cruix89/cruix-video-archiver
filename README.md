@@ -38,6 +38,12 @@ a fully automated docker image to easily download and manage videos based in YT 
 - **yt-dlp customization**  
   includes support for SponsorBlock, Geo Bypass, Proxy, Metadata, and more.
 
+- **`ytsearch:` function**  
+  great function that allows you to download files by keyword search. see how to use it in the "Tips and Tricks" section
+
+- **custom output folder function**  
+  great function that allows you to download files in a custom output folder. see how to use it in the "Tips and Tricks" section
+
 - **smart caches and config files**  
   folders, cache and configuration files in the /config directory for full control of execution processes.
 
@@ -45,8 +51,8 @@ a fully automated docker image to easily download and manage videos based in YT 
   video processing using [ffmpeg](https://github.com/FFmpeg/FFmpeg) to calculate the audio LUFS and normalize the entire library,  
   using the same parameters that major streaming platforms use, improving the sound experience and reducing volume differences between different sounds
 
-- **HVEC (X265) encoding**  
-  video processing using [ffmpeg](https://github.com/FFmpeg/FFmpeg) to encoder the entire library to hvec codec.  
+- **HVEC (x265) encoding**  
+  video processing using [ffmpeg](https://github.com/FFmpeg/FFmpeg) to encode the entire library to hvec codec.  
   saving disk space and bring the modern format to the library
 
 - **designed for excellent compatibility with large media center projects**  
@@ -116,9 +122,18 @@ docker run
   stores `yt-dlp` arguments, customizable for different needs.
 
 
+- **ffmpeg_cache.txt**  
+  this cache file stores the files already processed by ffmpeg, if you want to reprocess your library, delete this file.
+
+
+- **ffmpeg_failed_files_cache.txt**  
+  this cache stores library files that were corrupted and removed by the system. If this file appears in your /config, examine the files and add another link to download the file again if you want.
+
+
 - **links.txt**  
   location: `/config/links.txt`. channel list or playlist URLs to download.
-  
+
+
   adding a new link by .txt editing:
   ```plaintext
   # CHANNEL
@@ -130,17 +145,41 @@ docker run
   docker exec cruix-music-archiver bash -c 'echo "https://www.youtube.com/channel/UCePOvb3aG9w" >> ./links.txt'
   ```
 
-
-- **loudnorm_cache.txt**  
-  this cache file stores the files already processed by ffmpeg, if you want to reprocess your library, delete this file.
-
-
-- **loudnorm_failed_files_cache.txt**  
-  this cache stores library files that were corrupted and removed by the system. If this file appears in your /config, examine the files and add another link to download the file again if you want.
-
-
 - **post-execution.sh**  
   these are the script that run before and after downloads to process and manage the music library.
+
+---
+
+
+## ✨ : TIPS AND TRICKS
+
+- **`ytsearch:` function**  
+
+configuring the function ytsearch to save in the default download folder, Exemple:
+  ```plaintext
+  ytsearch10:funny-pranks-compilation
+  ```
+in this case the function will save the first 10 results. Change the number to how many files you want to download 
+for each search. You can place as many lines as you want, respecting one line for each search. Exemple:
+```plaintext
+  ytsearch10:funny-pranks-compilation
+  ytsearch50:best-goals
+  ytsearch500:karaoke
+  ```
+setting the custom output folder to ytsearch save your files, Exemple:
+  ```plaintext
+  ytsearch10:funny-pranks-compilation | --output '/downloads/pranks-videos-to-my-kids/%(title)s.%(ext)s'
+  ytsearch50:best-goals | --output '/downloads/goals-videos-to-my-dad/%(title)s.%(ext)s'
+  ytsearch500:karaoke | --output '/downloads/karaoke-songs-for-mommy/%(title)s.%(ext)s'
+  ```
+
+- **custom output folders for any link**
+
+   its possible to configure a custom output folder for any link, Exemple:
+```plaintext
+  https://www.youtube.com/watch?v=6VoT-KrseHA&pp=ygUHS0F | --output '/downloads/special-videos/%(title)s.%(ext)s'
+  https://www.youtube.com/@anychannel | --output '/downloads/my-favorite-channels/%(title)s.%(ext)s'
+  ```
 
 ---
 
