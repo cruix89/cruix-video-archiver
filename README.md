@@ -1,5 +1,5 @@
 
-# <img src="https://i.imgur.com/l7bI0hZ.png" alt="Logo do Projeto" width="32" height="32"> cruix89 / cruix-video-archiver-hvec <img src="https://i.imgur.com/l7bI0hZ.png" alt="Logo do Projeto" width="32" height="32">
+# <img src="https://i.imgur.com/ATlVfjR.png" alt="Logo do Projeto" width="32" height="32"> cruix89 / cruix-video-archiver-hvec <img src="https://i.imgur.com/ATlVfjR.png" alt="Logo do Projeto" width="32" height="32">
 
 [![GitHub last commit](https://img.shields.io/github/last-commit/cruix89/cruix-video-archiver-hvec?logo=github)](https://github.com/cruix89/cruix-video-archiver-hvec/actions/workflows/push-unstable-image.yml/)
 [![GitHub Automated build](https://img.shields.io/github/actions/workflow/status/cruix89/cruix-video-archiver-hvec/push-release-version-image.yml?logo=github)](https://github.com/cruix89/cruix-video-archiver-hvec/actions/workflows/push-release-version-image.yml/)
