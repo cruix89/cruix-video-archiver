@@ -165,18 +165,21 @@ docker run
 
 - **`ytsearch:` function**  
 
-configuring the function ytsearch to save in the default download folder, this function is added in the links.txt also, Exemple:
+configuring the function ytsearch to save in the default download folder, this function is added in the links.txt also, 
+Exemple:
   ```plaintext
   ytsearch10:funny-pranks-compilation
   ```
 in this case the function will save the first 10 results. Change the number to how many files you want to download 
-for each search. You can place as many lines as you want, respecting one line for each search. Exemple:
+for each search. You can place as many lines as you want, respecting one line for each search. 
+Exemple:
 ```plaintext
   ytsearch10:funny-pranks-compilation
   ytsearch50:best-goals
   ytsearch500:karaoke
   ```
-setting the custom output folder to ytsearch save your files, Exemple:
+setting the custom output folder to ytsearch save your files, 
+Exemple:
   ```plaintext
   ytsearch10:funny-pranks-compilation | --output '/downloads/pranks-videos-to-my-kids/%(title)s.%(ext)s'
   ytsearch50:best-goals | --output '/downloads/goals-videos-to-my-dad/%(title)s.%(ext)s'
@@ -185,7 +188,8 @@ setting the custom output folder to ytsearch save your files, Exemple:
 
 - **custom output folders for any link**
 
-   it's possible to configure a custom output folder for any link, Exemple:
+   it's possible to configure a custom output folder for any link, 
+Exemple:
 ```plaintext
   https://www.youtube.com/watch?v=6VoT-KrseHA&pp=ygUHS0F | --output '/downloads/special-videos/%(title)s.%(ext)s'
   https://www.youtube.com/@anychannel | --output '/downloads/my-favorite-channels/%(title)s.%(ext)s'
