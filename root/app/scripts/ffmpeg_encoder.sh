@@ -24,7 +24,7 @@ load_normalized_list() {
         touch "$normalized_list_file"
     fi
     mapfile -t normalized_files < "$normalized_list_file"
-    echo -e "[cruix-video-archiver] Number of Normalized Files In Cache: ${#normalized_files[@]} - Cache is Grooving!"
+    echo -e "[cruix-video-archiver] Number of Normalized Files In Cache: [ ${#normalized_files[@]} ] Cache is Grooving!"
 }
 
 # function to save to the normalized list
