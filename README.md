@@ -1,11 +1,11 @@
 
-# <img src="https://i.imgur.com/NKn3DmE.png" alt="Logo do Projeto" width="32" height="32"> cruix89 / cruix-video-archiver265 <img src="https://i.imgur.com/NKn3DmE.png" alt="Logo do Projeto" width="32" height="32">
+# <img src="https://i.imgur.com/NKn3DmE.png" alt="Logo do Projeto" width="32" height="32"> cruix89 / cruix-video-archiver <img src="https://i.imgur.com/NKn3DmE.png" alt="Logo do Projeto" width="32" height="32">
 
-[![GitHub last commit](https://img.shields.io/github/last-commit/cruix89/cruix-video-archiver265?logo=github)](https://github.com/cruix89/cruix-video-archiver265/actions/workflows/push-unstable-image.yml/)
-[![GitHub Automated build](https://img.shields.io/github/actions/workflow/status/cruix89/cruix-video-archiver265/push-release-version-image.yml?logo=github)](https://github.com/cruix89/cruix-video-archiver265/actions/workflows/push-release-version-image.yml/)
-[![Image Size](https://img.shields.io/docker/image-size/cruix89/cruix-video-archiver265/latest?style=flat&logo=docker)](https://hub.docker.com/r/cruix89/cruix-video-archiver265/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/cruix89/cruix-video-archiver265?style=flat&logo=docker)](https://hub.docker.com/r/cruix89/cruix-video-archiver265/)
-[![Docker Stars](https://img.shields.io/docker/stars/cruix89/cruix-video-archiver265?style=flat&logo=docker)](https://hub.docker.com/r/cruix89/cruix-video-archiver265/)
+[![GitHub last commit](https://img.shields.io/github/last-commit/cruix89/cruix-video-archiver?logo=github)](https://github.com/cruix89/cruix-video-archiver/actions/workflows/push-unstable-image.yml/)
+[![GitHub Automated build](https://img.shields.io/github/actions/workflow/status/cruix89/cruix-video-archiver/push-release-version-image.yml?logo=github)](https://github.com/cruix89/cruix-video-archiver/actions/workflows/push-release-version-image.yml/)
+[![Image Size](https://img.shields.io/docker/image-size/cruix89/cruix-video-archiver/latest?style=flat&logo=docker)](https://hub.docker.com/r/cruix89/cruix-video-archiver/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/cruix89/cruix-video-archiver?style=flat&logo=docker)](https://hub.docker.com/r/cruix89/cruix-video-archiver/)
+[![Docker Stars](https://img.shields.io/docker/stars/cruix89/cruix-video-archiver?style=flat&logo=docker)](https://hub.docker.com/r/cruix89/cruix-video-archiver/)
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-%23FF813F?style=flat&logo=buymeacoffee)](https://buymeacoffee.com/cruix89)
 
 
@@ -19,7 +19,7 @@ a fully automated docker image to easily download and manage videos based in YT 
 ## 💖 GENEROSITY
 
 - 😊 **if you like me, consider** [buy me a coffee](https://buymeacoffee.com/cruix89)
-- 📌 **docker hub:** [cruix-video-archiver265](https://hub.docker.com/r/cruix89/cruix-video-archiver265)  
+- 📌 **docker hub:** [cruix-video-archiver](https://hub.docker.com/r/cruix89/cruix-video-archiver)  
 - 📄 **yt-dlp documentation:** [yt-dlp](https://github.com/yt-dlp/yt-dlp)   
 
 ---
@@ -67,7 +67,7 @@ a fully automated docker image to easily download and manage videos based in YT 
 ```bash
 docker run
   -d
-  --name='cruix-video-archiver265'
+  --name='cruix-video-archiver'
   --privileged=true
   -e TZ="America/Sao_Paulo"
   -e 'yt_dlp_interval'='1h'
@@ -75,7 +75,7 @@ docker run
   -e 'PGID'='100'
   -e 'UMASK'='000'
   -v 'PATH':'/config':'rw'
-  -v 'PATH':'/downloads':'rw' 'cruix89/cruix-video-archiver265'
+  -v 'PATH':'/downloads':'rw' 'cruix89/cruix-video-archiver'
 ```
 
 ---
