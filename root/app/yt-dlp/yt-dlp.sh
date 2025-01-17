@@ -15,7 +15,9 @@ if grep -qPe '^--download-archive ' '/config/args.conf'; then yt_dlp_args_downlo
 yt_dlp_binary='yt-dlp'
 exec="$yt_dlp_binary"
 exec+=" --config-location '/config/args.conf'"
-exec+=" --batch-file '/tmp/urls'"; (cat '/config/links.txt'; echo '') > '/tmp/urls.temp'
+exec+=" --batch-file '/tmp/urls'"
+(cat '/config/links.txt'; echo '') > '/tmp/urls.temp'
+
 if $yt_dlp_args_verbose; then exec+=" --verbose"; fi
 if $yt_dlp_args_output_expand; then exec+=" $(grep -Pe '^(--output |-o ).*\$\(' '/config/args.conf')"; fi
 if [ -f '/config/cookies.txt' ]; then exec+=" --cookies '/config/cookies.txt'"; fi
@@ -49,7 +51,16 @@ while [ -f '/tmp/urls.temp' ]; do
   else
     mv '/tmp/urls.temp' '/tmp/urls'
   fi
-  eval "$exec $extra_url_args"
+
+  # ensure the file is not empty before proceeding
+  if [ -s '/tmp/urls' ]; then
+    eval "$exec $extra_url_args"
+  else
+    echo -e "\033[1;31merror: /tmp/urls is empty. skipping execution.\033[0m"
+    rm -f '/tmp/urls'
+    continue
+  fi
+
   rm -f '/tmp/urls'
 done
 

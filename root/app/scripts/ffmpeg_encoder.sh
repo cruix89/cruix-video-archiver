@@ -54,9 +54,9 @@ process_file() {
         local exit_code_audio=$?
 
         # step 2: re-encode the video
-        echo -e "\033[1;32m[cruix-video-archiver] Starting Video Re-Encoding For: $src_file . The HVEC transformation is in action!\033[0m"
+        echo -e "\033[1;32m[cruix-video-archiver] Starting Video Extracting For: $src_file . The Transformation is in Action!\033[0m"
         sleep 15
-        ffmpeg -y -i "$src_file" -c:v libx265 -preset slow -crf 23 -an "$output_file.mp4" | tee -a "$log_file"
+        ffmpeg -y -i "$src_file" -an "$output_file.mp4" | tee -a "$log_file"
         local exit_code_video=$?
 
         # step 3: combine video and normalized audio
