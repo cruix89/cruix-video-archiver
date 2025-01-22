@@ -50,7 +50,7 @@ process_file() {
         # step 1: normalize the audio
         echo -e "\033[1;32m[cruix-video-archiver] Starting Audio Normalization For: $src_file . Because Even Your Files Deserve To Hit The Right Notes!\033[0m"
         sleep 15
-        ffmpeg -y -i "$src_file" -af "loudnorm=I=-16:TP=-1:LRA=11" -vn "$output_file.wav" | tee -a "$log_file"
+        ffmpeg -y -i "$src_file" -af "loudnorm=I=-14:TP=-1:LRA=8" -vn "$output_file.wav" | tee -a "$log_file"
         local exit_code_audio=$?
 
         # step 2: re-encode the video
