@@ -12,7 +12,7 @@
 --- 
 
 ## 🎼: OVERVIEW
-a fully automated docker image to easily download and manage videos based in YT and other platforms supported by `yt-dlp`. With the LUFS and HVEC conversion to enhance your library to the best experience. See below for more details.
+a fully automated docker image to easily download and manage videos based in YT and other platforms supported by `yt-dlp`. With the LUFS normalization to enhance your library to the best experience. See below for more details.
 
 ---
 
@@ -50,10 +50,6 @@ a fully automated docker image to easily download and manage videos based in YT 
 - **LUFS-based normalization**  
   video processing using [ffmpeg](https://github.com/FFmpeg/FFmpeg) to calculate the audio LUFS and normalize the entire library,  
   using the same parameters that major streaming platforms use, improving the sound experience and reducing volume differences between different sounds
-
-- **HVEC (x265) encoding**  
-  video processing using [ffmpeg](https://github.com/FFmpeg/FFmpeg) to encode the entire library to hvec codec saving disk space and bring the modern format to the library. 
-  the conversion is done to a video at each cycle of the system that is processing is done then the system goes into standby mode configured in 'yt_dlp_interval', after a new cycle another video processing is done and so on until the entire library is converted after the system no longer detects unprocessed videos then it will go directly to standby mode
 
 - **designed for excellent compatibility with large media center projects**  
   the library structure is organized for great viewing on [plex](https://github.com/plexinc/pms-docker) and [jellyfin](https://jellyfin.org/docs/general/installation/container/)
