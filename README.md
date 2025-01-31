@@ -224,7 +224,7 @@ Exemple:
 | `--embed-thumbnail`     | `--embed-thumbnail`                           | grab the thumbnail in the video file                                  |
 | `--embed-metadata`      | `--embed-metadata`                            | grab the video metadata in the file                                   |
 | `--embed-chapters`      | `--embed-chapters`                            | grab the chapter marks in the file                                    |
-| `--sleep-requests`      | `1.5`                                         | waits for time to prevent request blocking                            |
+| `--sleep-requests`      | `0.1`                                         | waits for time to prevent request blocking                            |
 | `--match-filter`        | `"!is_live"`                                  | prevent to download live streams causing a downloading loop           |
 | `--sub-langs`           | `all,-live_chat`                              | download all subs available to the videos                             |
 | `--convert-subs`        | `srt`                                         | convert all downloaded subs in srt files                              |

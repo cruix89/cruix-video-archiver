@@ -16,9 +16,6 @@ if [ -d "$downloads_dir" ]; then
   find $cache_dir -type f -delete
   find $cache_dir -type d -empty -mindepth 1 -delete
 
-  sleep '5'
-  find "$downloads_dir" -mindepth 1 -type d -empty -delete
-
   echo -e "[cruix-video-archiver] Executing FFMPEG Process In The Video Library..."
 
   # post-processing scripts in downloads folder
@@ -30,9 +27,6 @@ if [ -d "$downloads_dir" ]; then
   sleep '5'
   umask "$UMASK"
   /app/scripts/ffmpeg_encoder.sh
-
-  sleep '5'
-  find "$downloads_dir" -mindepth 1 -type d -empty -delete
 
 else
   echo -e "[cruix-video-archiver] Oops! Output Directory Not Found: $downloads_dir "
