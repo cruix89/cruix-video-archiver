@@ -8,12 +8,12 @@ export LC_ALL="C.UTF-8"
 normalized_log_dir="${normalized_log_dir:-/config/logs}"
 normalized_list_file="${normalized_list_file:-/config/ffmpeg_cache.txt}"
 cache_dir="/config/cache"
-failed_log_file="/config/ffmpeg_failed_files_cache.txt"  # log file for failed files
+failed_log_file="/config/ffmpeg_failed_files_cache.txt"
 
 # function to check if ffmpeg is installed
 check_ffmpeg() {
     if ! command -v ffmpeg &> /dev/null; then
-        echo -e "[cruix-video-archiver] FFMPEG is Not Installed. The Force is Weak in This System, No Media Manipulation Powers!"
+        echo "[cruix-video-archiver] ERROR: FFMPEG Not Found."
         exit 1
     fi
 }
@@ -23,8 +23,6 @@ load_normalized_list() {
     if [[ ! -f "$normalized_list_file" ]]; then
         touch "$normalized_list_file"
     fi
-    mapfile -t normalized_files < "$normalized_list_file"
-    echo -e "[cruix-video-archiver] Number of Normalized Files In Cache: [ ${#normalized_files[@]} ] Cache is Grooving!"
 }
 
 # function to save to the normalized list
@@ -34,50 +32,66 @@ save_to_normalized_list() {
 
 # function to log a failed file
 log_failed_file() {
-    local src_file="$1"
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - Failed Processing File: $src_file" >> "$failed_log_file"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - Failed Processing File: $1" >> "$failed_log_file"
+}
+
+# function to wait for file release
+wait_for_file_release() {
+    local file="$1"
+    while lsof "$file" &> /dev/null; do
+        echo "[cruix-video-archiver] Waiting for File to be Released: $file"
+        sleep 5
+    done
 }
 
 # function to process the video file with real-time progress display
 process_file() {
     local src_file="$1"
     local log_file="$2"
+
+    # declare the variable output_file first
     local output_file
-    output_file="${cache_dir}/$(basename "${src_file%.*}")"
 
-    # FFMPEG command to normalize audio, re-encode video, and combine
-    {
-        # step 1: normalize the audio
-        echo -e "\033[1;32m[cruix-video-archiver] Starting Audio Normalization For: $src_file . Because Even Your Files Deserve To Hit The Right Notes!\033[0m"
-        sleep 15
-        ffmpeg -y -i "$src_file" -af "loudnorm=I=-14:TP=-1:LRA=8" -vn "$output_file.wav" | tee -a "$log_file"
-        local exit_code_audio=$?
+    # assign the value to output_file separately
+    output_file="${cache_dir}/$(basename "${src_file%.*}.mkv")"
 
-        # step 2: re-encode the video
-        echo -e "\033[1;32m[cruix-video-archiver] Starting Video Extracting For: $src_file . The Transformation is in Action!\033[0m"
-        sleep 15
-        ffmpeg -y -i "$src_file" -an -c:v copy "$output_file.mp4" | tee -a "$log_file"
-        local exit_code_video=$?
+    echo "[cruix-video-archiver] Processing: $src_file"
 
-        # step 3: combine video and normalized audio
-        echo -e "\033[1;32m[cruix-video-archiver] Merging Video and Audio For: $src_file . Crafting the Perfect Symphony!\033[0m"
-        sleep 15
-        ffmpeg -y -i "$output_file.mp4" -i "$output_file.wav" -c:v copy -c:a aac -strict experimental "${output_file}_x265.mp4" | tee -a "$log_file"
-        local exit_code_combine=$?
+    # normalize all audio tracks and keep everything else unchanged
+    ffmpeg -y -i "$src_file" -map 0 -c:v copy -c:s copy -c:a aac -af "loudnorm=I=-14:TP=-1:LRA=8" "$output_file" | tee -a "$log_file"
+    local exit_code=$?
 
-    }
+    # ensure ffmpeg finished writing before proceeding
+    sync
 
-    # check the exit codes of all three stages
-    if [[ -f "${output_file}_x265.mp4" && $exit_code_audio -eq 0 && $exit_code_video -eq 0 && $exit_code_combine -eq 0 ]]; then
-        rm -f "$src_file"
-        mv "${output_file}_x265.mp4" "${src_file%.*}.mp4"
-        save_to_normalized_list "${src_file%.*}.mp4"
-        echo -e "[cruix-video-archiver] Processed and Replaced: ${src_file%.*}.mp4 "
-        rm -f "$cache_dir"/*
-        echo -e "[cruix-video-archiver] Cleaning Cache Directory: $cache_dir "
+    # check if the process was successful
+    if [[ -f "$output_file" && $exit_code -eq 0 ]]; then
+        echo "[cruix-video-archiver] Successfully Processed: $output_file"
+
+        # wait for file system to stabilize
+        sleep 5
+
+        # ensure file is not in use before proceeding
+        wait_for_file_release "$src_file"
+
+        # remove original and move processed file only if ffmpeg has finished successfully
+        if [[ -f "$output_file" && ! -f "$src_file" ]]; then
+            rm -f "$src_file"
+            mv "$output_file" "${src_file%.*}.mkv"
+
+            # register in cache only after successful move
+            save_to_normalized_list "${src_file%.*}.mkv"
+
+            # clean cache
+            rm -f "$cache_dir"/*
+            echo "[cruix-video-archiver] Cache Cleaned."
+        else
+            log_failed_file "$src_file"
+            echo "[cruix-video-archiver] ERROR: Processing Failed For: $src_file"
+        fi
     else
         log_failed_file "$src_file"
-        echo "$(date '+%Y-%m-%d %H:%M:%S') - Error Processing File: $src_file" >> "$log_file"
+        echo "[cruix-video-archiver] ERROR: Processing Failed For: $src_file"
     fi
 }
 
@@ -88,23 +102,28 @@ main() {
 
     local log_file="$normalized_log_dir/ffmpeg_encoder.log"
 
-    # ensure the cache directory exists
     if [[ ! -d "$cache_dir" ]]; then
         mkdir -p "$cache_dir"
-        echo "[cruix-video-archiver] Created Cache Directory: $cache_dir "
     fi
 
-    # find an unprocessed video file
+    # declare the variable first
     local src_file
-    src_file=$(find "/downloads" -type f \( -name "*.mp4" -o -name "*.mkv" -o -name "*.webm" -o -name "*.flv" -o -name "*.avi" -o -name "*.mov" -o -name "*.wmv" -o -name "*.mpg" -o -name "*.mpeg" -o -name "*.3gp" -o -name "*.m4v" \) ! -exec grep -F -x -q "{}" "$normalized_list_file" \; -print -quit)
 
-    # if no unprocessed file is found, exit the script
+    # now assign the result of find to src_file
+    src_file=$(find "/downloads" -type f \( -name "*.mp4" -o -name "*.mkv" -o -name "*.webm" -o -name "*.flv" -o -name "*.avi" -o -name "*.mov" -o -name "*.wmv" -o -name "*.mpg" -o -name "*.mpeg" -o -name "*.3gp" -o -name "*.m4v" \) \
+        | while read -r file; do
+            if ! grep -Fxq "$(basename "$file")" "$normalized_list_file"; then
+                echo "$file"
+            fi
+        done | head -n 1)
+
+    # if no unprocessed video is found, exit
     if [[ -z "$src_file" ]]; then
-        echo -e "[cruix-video-archiver] No Unprocessed Videos Found. Exiting."
+        echo "[cruix-video-archiver] No Unprocessed Videos Found."
         exit 0
     fi
 
-    # process the single unprocessed file
+    # process the found video file
     process_file "$src_file" "$log_file"
 }
 
