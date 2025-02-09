@@ -9,7 +9,7 @@ logs_dir="/config/logs"
 # remove cache files in the output directory and process post-processing scripts
 if [ -d "$downloads_dir" ]; then
 
-  echo -e "[cruix-video-archiver] Initiating Cleanup Protocol... Purging Cache Files From the Following Directories: /cache /logs /downloads."
+  echo -e "[cruix-video-archiver] Initiating Cleanup Protocol... Purging Cache Files From the Following Directories: /cache and /logs"
 
   sleep '5'
   mkdir -p $cache_dir
