@@ -59,7 +59,8 @@ process_file() {
 
     # normalize all audio tracks and keep everything else unchanged
     ffmpeg -y -i "$src_file" -map 0 -c:v copy -c:s copy -c:a aac -af "loudnorm=I=-14:TP=-1:LRA=8" "$output_file" >> "$log_file" 2>&1
-    local exit_code=$?
+    local exit_code
+    exit_code=$?
 
     # ensure ffmpeg finished writing before proceeding
     sync
@@ -83,7 +84,7 @@ process_file() {
             save_to_normalized_list "${src_file%.*}.mkv"
 
             # clean cache
-            rm -f "$cache_dir"/*
+            find "$cache_dir" -type f -delete
             echo "[cruix-video-archiver] Cache Cleaned."
         else
             log_failed_file "$src_file"
