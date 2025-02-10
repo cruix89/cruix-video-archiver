@@ -58,7 +58,7 @@ process_file() {
     echo "[cruix-video-archiver] Processing: $src_file"
 
     # normalize all audio tracks and keep everything else unchanged
-    ffmpeg -y -i "$src_file" -map 0 -c:v copy -c:s copy -c:a aac -af "loudnorm=I=-14:TP=-1:LRA=8" "$output_file" >> "$log_file" 2>&1
+    ffmpeg -y -i "$src_file" -map 0 -c:v copy -c:s copy -c:a aac -af "loudnorm=I=-14:TP=-1:LRA=8" -loglevel trace -stats "$output_file" >> "$log_file" 2>&1
     local exit_code
     exit_code=$?
 
