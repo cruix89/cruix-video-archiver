@@ -17,12 +17,13 @@ COPY root/ /
 # install dependencies and packages (without --no-install-recommends)
 RUN set -x && \
     apt-get update && \
+    apt-get upgrade -y && \
     apt-get install -y \
         file \
         wget \
         python3 \
         python3-pip \
-        libc-dev \
+        libc6-dev \  # updated to libc6-dev instead of libc-dev
         xvfb \
         scrot \
         xclip \
@@ -52,7 +53,9 @@ RUN set -x && \
         libgdk-pixbuf2.0-dev \
         libglib2.0-dev \
         libmagickwand-dev \
+        imagemagick-common \  # updated to imagemagick-common
         imagemagick && \
+    python3 -m pip --no-cache-dir install --upgrade pip && \
     python3 -m pip --no-cache-dir install -r /app/requirements.txt && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
