@@ -1,6 +1,7 @@
-FROM debian:bookworm-slim
+FROM debian:12-slim
 
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2" \
+    PATH="/home/abc/.venv/bin:$PATH" \
     PUID="911" \
     PGID="911" \
     UMASK="022" \
@@ -9,32 +10,42 @@ ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2" \
 # create group and user
 RUN set -x && \
     addgroup --gid "$PGID" abc && \
-    adduser --gecos "" --disabled-password --no-create-home --uid "$PUID" --ingroup abc --shell /bin/bash abc
+    adduser --gecos "" --disabled-password --uid "$PUID" --ingroup abc --shell /bin/bash abc
 
 # copy files
-COPY root/ /
+COPY root/app/requirements.txt /app/
 
 # install dependencies and packages (without --no-install-recommends)
 RUN set -x && \
-    apt-get update && \
-    apt-get install -y \
+    apt update && \
+    apt install -y \
+        supervisor \
+        file \
         wget \
         curl \
         ca-certificates \
         python3 \
+        python3-venv \
         python3-pip \
         libffi-dev \
         libgmp-dev \
         libbrotli-dev \
         gnupg && \
-    python3 -m pip --no-cache-dir install -r /app/requirements.txt && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    apt clean && \
+    python3 -m venv /home/abc/.venv && \
+    /home/abc/.venv/bin/pip --no-cache-dir install -r /app/requirements.txt && \
+    rm -rf \
+        /var/lib/apt/lists/* \
+        /tmp/*
+
+# copy files
+COPY root/ /
 
 # install FFMPEG from debian repository
 RUN set -x && \
-    apt-get update && \
-    apt-get install -y ffmpeg && \
-    apt-get clean && \
+    apt update && \
+    apt install -y ffmpeg && \
+    apt clean && \
     rm -rf /var/lib/apt/lists/*
 
 # install S6 overlay
@@ -45,7 +56,7 @@ RUN set -x && \
 
 # install yt-dlp
 RUN set -x && \
-    python3 -m pip --no-cache-dir install yt-dlp
+    /home/abc/.venv/bin/pip --no-cache-dir install yt-dlp
 
 # set volumes and working directory
 VOLUME /config /downloads
