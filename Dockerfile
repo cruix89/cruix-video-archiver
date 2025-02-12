@@ -1,4 +1,4 @@
-FROM debian:latest-slim
+FROM debian:bookworm-slim
 
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2" \
     PUID="911" \
@@ -8,8 +8,8 @@ ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2" \
 
 # configure the official debian mirror
 RUN set -x && \
-    echo "deb http://deb.debian.org/debian stable main contrib non-free" > /etc/apt/sources.list && \
-    echo "deb http://security.debian.org/debian-security stable-security main contrib non-free" >> /etc/apt/sources.list && \
+    echo "deb http://deb.debian.org/debian bookworm main contrib non-free" > /etc/apt/sources.list && \
+    echo "deb http://security.debian.org/debian-security bookworm-security main contrib non-free" >> /etc/apt/sources.list && \
     apt-get update
 
 # create group and user
