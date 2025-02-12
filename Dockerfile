@@ -6,12 +6,6 @@ ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2" \
     UMASK="022" \
     OPENSSL_CONF=""
 
-# configure the official debian mirror
-RUN set -x && \
-    echo "deb http://deb.debian.org/debian bookworm main contrib non-free" > /etc/apt/sources.list && \
-    echo "deb http://security.debian.org/debian-security bookworm-security main contrib non-free" >> /etc/apt/sources.list && \
-    apt-get update
-
 # create group and user
 RUN set -x && \
     addgroup --gid "$PGID" abc && \
@@ -20,58 +14,30 @@ RUN set -x && \
 # copy files
 COPY root/ /
 
-# install dependencies and packages
+# install dependencies and packages (without --no-install-recommends)
 RUN set -x && \
-    apt-get upgrade -y && \
+    apt-get update && \
     apt-get install -y \
-        file \
         wget \
-        python3 \
-        python3-pip \
-        libc6-dev \
-        xvfb \
-        scrot \
-        xclip \
         curl \
         ca-certificates \
-        fonts-liberation \
-        libappindicator3-1 \
-        libasound2 \
-        libatk-bridge2.0-0 \
-        libnspr4 \
-        libnss3 \
-        libxcomposite1 \
-        libxdamage1 \
-        libxrandr2 \
-        xdg-utils \
-        gnupg \
-        libjpeg-dev \
-        zlib1g-dev \
-        libfreetype6-dev \
-        libpng-dev \
-        libtiff-dev \
-        ghostscript \
-        liblcms2-dev \
-        libfontconfig1-dev \
+        python3 \
+        python3-pip \
         libffi-dev \
-        libxml2-dev \
-        libgdk-pixbuf2.0-dev \
-        libglib2.0-dev \
-        libmagickwand-dev \
-        imagemagick-common \
-        imagemagick && \
-    python3 -m pip --no-cache-dir install --upgrade pip && \
+        libgmp-dev \
+        libbrotli-dev \
+        gnupg && \
     python3 -m pip --no-cache-dir install -r /app/requirements.txt && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# install ffmpeg from the official debian repository
+# install FFMPEG from debian repository
 RUN set -x && \
     apt-get update && \
     apt-get install -y ffmpeg && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# install s6 overlay
+# install S6 overlay
 RUN set -x && \
     wget -q -O /tmp/s6-overlay.tar.gz https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz && \
     tar -xzf /tmp/s6-overlay.tar.gz -C / && \
@@ -85,5 +51,5 @@ RUN set -x && \
 VOLUME /config /downloads
 WORKDIR /config
 
-# set entrypoint
+# entrypoint
 ENTRYPOINT ["/init"]
