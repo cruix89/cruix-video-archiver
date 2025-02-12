@@ -1,4 +1,4 @@
-FROM debian:11-slim
+FROM debian:latest-slim
 
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2" \
     PUID="911" \
