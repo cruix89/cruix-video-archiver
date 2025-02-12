@@ -6,6 +6,12 @@ ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2" \
     UMASK="022" \
     OPENSSL_CONF=""
 
+# configure the official debian mirror
+RUN set -x && \
+    echo "deb http://deb.debian.org/debian stable main contrib non-free" > /etc/apt/sources.list && \
+    echo "deb http://security.debian.org/debian-security stable-security main contrib non-free" >> /etc/apt/sources.list && \
+    apt-get update
+
 # create group and user
 RUN set -x && \
     addgroup --gid "$PGID" abc && \
@@ -14,9 +20,8 @@ RUN set -x && \
 # copy files
 COPY root/ /
 
-# install dependencies and packages (without --no-install-recommends)
+# install dependencies and packages
 RUN set -x && \
-    apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y \
         file \
@@ -59,14 +64,14 @@ RUN set -x && \
     python3 -m pip --no-cache-dir install -r /app/requirements.txt && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# install FFMPEG from debian repository
+# install ffmpeg from the official debian repository
 RUN set -x && \
     apt-get update && \
     apt-get install -y ffmpeg && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# install S6 overlay
+# install s6 overlay
 RUN set -x && \
     wget -q -O /tmp/s6-overlay.tar.gz https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz && \
     tar -xzf /tmp/s6-overlay.tar.gz -C / && \
@@ -80,5 +85,5 @@ RUN set -x && \
 VOLUME /config /downloads
 WORKDIR /config
 
-# entrypoint
+# set entrypoint
 ENTRYPOINT ["/init"]
