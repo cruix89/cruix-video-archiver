@@ -8,16 +8,14 @@ ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2" \
     OPENSSL_CONF=""
 
 # create group and user
-RUN set -x && \
-    addgroup --gid "$PGID" abc && \
+RUN addgroup --gid "$PGID" abc && \
     adduser --gecos "" --disabled-password --uid "$PUID" --ingroup abc --shell /bin/bash abc
 
 # copy files
 COPY root/app/requirements.txt /app/
 
-# install dependencies and packages (without --no-install-recommends)
-RUN set -x && \
-    apt update && \
+# install dependencies and packages
+RUN apt update && \
     apt install -y \
         supervisor \
         file \
@@ -34,29 +32,24 @@ RUN set -x && \
     apt clean && \
     python3 -m venv /home/abc/.venv && \
     /home/abc/.venv/bin/pip --no-cache-dir install -r /app/requirements.txt && \
-    rm -rf \
-        /var/lib/apt/lists/* \
-        /tmp/*
+    rm -rf /var/lib/apt/lists/* /tmp/*
 
 # copy files
 COPY root/ /
 
 # install FFMPEG from debian repository
-RUN set -x && \
-    apt update && \
+RUN apt update && \
     apt install -y ffmpeg && \
     apt clean && \
     rm -rf /var/lib/apt/lists/*
 
 # install S6 overlay
-RUN set -x && \
-    wget -q -O /tmp/s6-overlay.tar.gz https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz && \
+RUN wget -q -O /tmp/s6-overlay.tar.gz https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz && \
     tar -xzf /tmp/s6-overlay.tar.gz -C / && \
     rm -rf /tmp/*
 
 # install yt-dlp
-RUN set -x && \
-    /home/abc/.venv/bin/pip --no-cache-dir install yt-dlp[default]
+RUN /home/abc/.venv/bin/pip --no-cache-dir install yt-dlp[default]
 
 # set volumes and working directory
 VOLUME /config /downloads
