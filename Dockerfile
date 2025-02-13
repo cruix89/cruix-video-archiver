@@ -23,13 +23,15 @@ RUN apt update && apt install -y \
         python3-certifi \
         python3-brotli \
         python3-pycryptodome \
-        python3-yt-dlp \
         libffi-dev \
         libgmp-dev \
         libbrotli-dev \
         gnupg \
         ffmpeg && \
     apt clean && rm -rf /var/lib/apt/lists/*
+
+# install yt-dlp using pip3
+RUN pip3 --no-cache-dir install --break-system-packages yt-dlp
 
 # copy remaining files
 COPY root/ /
