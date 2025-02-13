@@ -56,7 +56,7 @@ RUN set -x && \
 
 # install yt-dlp
 RUN set -x && \
-    /home/abc/.venv/bin/pip --no-cache-dir install yt-dlp
+    /home/abc/.venv/bin/pip --no-cache-dir install yt-dlp[default]
 
 # set volumes and working directory
 VOLUME /config /downloads
