@@ -52,7 +52,7 @@ process_file() {
 
     echo -e "\e[32m[cruix-video-archiver] Processing: $src_file\e[0m"
 
-    ffmpeg -y -i "$src_file" -map 0 -c:v copy -c:s copy -c:a aac -af "loudnorm=I=-14:TP=-1:LRA=8" -loglevel trace -stats "$output_file"
+    ffmpeg -y -i "$src_file" -map 0 -c:v copy -c:s copy -c:a aac -af "loudnorm=I=-14:TP=-1:LRA=8" -loglevel debug -stats "$output_file"
     local exit_code=$?
 
     sync
@@ -84,7 +84,7 @@ main() {
     local src_file
     src_file=$(find "/downloads" -type f \( -name "*.mp4" -o -name "*.mkv" -o -name "*.webm" -o -name "*.flv" -o -name "*.avi" -o -name "*.mov" -o -name "*.wmv" -o -name "*.mpg" -o -name "*.mpeg" -o -name "*.3gp" -o -name "*.m4v" \) \
         | while read -r file; do
-            if ! grep -Fxq "$(basename "$file")" "$normalized_list_file"; then
+            if ! grep -Fxq "$file" "$normalized_list_file"; then
                 echo "$file"
             fi
         done | head -n 1)
