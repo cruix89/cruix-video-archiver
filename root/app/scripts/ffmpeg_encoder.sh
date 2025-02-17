@@ -52,7 +52,9 @@ process_file() {
 
     echo -e "\e[32m\e[1m[cruix-video-archiver] processing: $src_file\e[0m"
 
-    ffmpeg -y -i "$src_file" -map 0 -c:v copy -c:s copy -c:a aac -af "loudnorm=I=-14:TP=-1:LRA=8" -loglevel verbose -stats "$output_file"
+    ffmpeg -y -i "$src_file" -map 0 -c:v copy -c:s copy -c:a pcm_s16le -af "loudnorm=I=-14:TP=-1:LRA=8" -loglevel verbose -stats "temp_audio.wav" && \
+    ffmpeg -y -i "$src_file" -i "temp_audio.wav" -map 0:v -map 1:a -map 0:s? -c:v copy -c:a aac -b:a 320k -c:s copy "$output_file" && \
+    rm "temp_audio.wav"
     local exit_code=$?
 
     sync
