@@ -12,7 +12,7 @@ failed_log_file="/config/ffmpeg_failed_files_cache.txt"
 # function to check if ffmpeg is installed
 check_ffmpeg() {
     if ! command -v ffmpeg &> /dev/null; then
-        echo -e "\e[31m[cruix-video-archiver] ERROR: FFMPEG NOT FOUND.\e[0m"
+        echo -e "\e[31m\e[1m[cruix-video-archiver] error: ffmpeg not found.\e[0m"
         exit 1
     fi
 }
@@ -38,7 +38,7 @@ log_failed_file() {
 wait_for_file_release() {
     local file="$1"
     while lsof "$file" &> /dev/null; do
-        echo -e "\e[33m[cruix-video-archiver] Waiting for File to be Released: $file\e[0m"
+        echo -e "\e[33m\e[1m[cruix-video-archiver] waiting for file to be released: $file\e[0m"
         sleep 5
     done
 }
@@ -50,7 +50,7 @@ process_file() {
 
     output_file="${cache_dir}/$(basename "${src_file%.*}.mkv")"
 
-    echo -e "\e[32m[cruix-video-archiver] Processing: $src_file\e[0m"
+    echo -e "\e[32m\e[1m[cruix-video-archiver] processing: $src_file\e[0m"
 
     ffmpeg -y -i "$src_file" -map 0 -c:v copy -c:s copy -c:a aac -af "loudnorm=I=-14:TP=-1:LRA=8" -loglevel debug -stats "$output_file"
     local exit_code=$?
@@ -58,17 +58,17 @@ process_file() {
     sync
 
     if [[ -f "$output_file" && $exit_code -eq 0 ]]; then
-        echo -e "\e[32m[cruix-video-archiver] Successfully Processed: $output_file\e[0m"
+        echo -e "\e[32m\e[1m[cruix-video-archiver] successfully processed: $output_file\e[0m"
         sleep 5
         wait_for_file_release "$src_file"
         rm -f "$src_file"
         mv "$output_file" "${src_file%.*}.mkv"
         save_to_normalized_list "${src_file%.*}.mkv"
         find "$cache_dir" -type f -delete
-        echo -e "\e[32m[cruix-video-archiver] Cache Cleaned.\e[0m"
+        echo -e "\e[32m\e[1m[cruix-video-archiver] cache cleaned.\e[0m"
     else
         log_failed_file "$src_file"
-        echo -e "\e[31m[cruix-video-archiver] ERROR: Process Failed For: $src_file\e[0m"
+        echo -e "\e[31m\e[1m[cruix-video-archiver] error: process failed for: $src_file\e[0m"
     fi
 }
 
@@ -90,7 +90,7 @@ main() {
         done | head -n 1)
 
     if [[ -z "$src_file" ]]; then
-        echo -e "\e[32m[cruix-video-archiver] No Unprocessed Videos Found.\e[0m"
+        echo -e "\e[32m\e[1m[cruix-video-archiver] no unprocessed videos found.\e[0m"
         exit 0
     fi
 
