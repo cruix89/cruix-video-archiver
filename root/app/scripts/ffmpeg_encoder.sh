@@ -9,6 +9,16 @@ PUID=${PUID:-1000}
 PGID=${PGID:-100}
 UMASK=${UMASK:-000}
 
+# group create
+if ! getent group "$PGID" >/dev/null 2>&1; then
+    groupadd -g "$PGID" containergroup
+fi
+
+# user create
+if ! id "$PUID" >/dev/null 2>&1; then
+    useradd -u "$PUID" -g "$PGID" -m containeruser
+fi
+
 # environment variable configurations
 normalized_list_file="${normalized_list_file:-/config/ffmpeg_cache.txt}"
 cache_dir="/config/cache"
