@@ -4,6 +4,11 @@
 export LANG="C.UTF-8"
 export LC_ALL="C.UTF-8"
 
+# get container user permissions
+PUID=${PUID:-1000}
+PGID=${PGID:-100}
+UMASK=${UMASK:-000}
+
 # environment variable configurations
 normalized_list_file="${normalized_list_file:-/config/ffmpeg_cache.txt}"
 cache_dir="/config/cache"
@@ -21,17 +26,21 @@ check_ffmpeg() {
 load_normalized_list() {
     if [[ ! -f "$normalized_list_file" ]]; then
         touch "$normalized_list_file"
+        chown "$PUID:$PGID" "$normalized_list_file"
+        chmod "$UMASK" "$normalized_list_file"
     fi
 }
 
 # function to save to the normalized list
 save_to_normalized_list() {
     echo "$1" >> "$normalized_list_file"
+    chown "$PUID:$PGID" "$normalized_list_file"
 }
 
 # function to log a failed file
 log_failed_file() {
     echo "$1" >> "$failed_log_file"
+    chown "$PUID:$PGID" "$failed_log_file"
 }
 
 # function to wait for file release
@@ -52,8 +61,8 @@ process_file() {
 
     echo -e "\e[32m\e[1m[cruix-video-archiver] processing: $src_file\e[0m"
 
-    ffmpeg -y -i "$src_file" -map 0 -c:v copy -c:s copy -c:a pcm_s16le -af "loudnorm=I=-14:TP=-1:LRA=8" -loglevel verbose -stats "temp_audio.wav" && \
-    ffmpeg -y -i "$src_file" -i "temp_audio.wav" -map 0:v -map 1:a -map 0:s? -c:v copy -c:a aac -b:a 320k -c:s copy "$output_file" && \
+    runuser -u "#$PUID" -g "#$PGID" -- ffmpeg -y -i "$src_file" -map 0 -c:v copy -c:s copy -c:a pcm_s16le -af "loudnorm=I=-14:TP=-1:LRA=8" -loglevel verbose -stats "temp_audio.wav" && \
+    runuser -u "#$PUID" -g "#$PGID" -- ffmpeg -y -i "$src_file" -i "temp_audio.wav" -map 0:v -map 1:a -map 0:s? -c:v copy -c:a aac -b:a 320k -c:s copy "$output_file" && \
     rm "temp_audio.wav"
     local exit_code=$?
 
@@ -61,11 +70,15 @@ process_file() {
 
     if [[ -f "$output_file" && $exit_code -eq 0 ]]; then
         echo -e "\e[32m\e[1m[cruix-video-archiver] successfully processed: $output_file\e[0m"
+        chown "$PUID:$PGID" "$output_file"
+        chmod "$UMASK" "$output_file"
+
         sleep 5
         wait_for_file_release "$src_file"
         rm -f "$src_file"
         mv "$output_file" "${src_file%.*}.mkv"
         save_to_normalized_list "${src_file%.*}.mkv"
+
         find "$cache_dir" -type f -delete
         echo -e "\e[32m\e[1m[cruix-video-archiver] cache cleaned.\e[0m"
     else
@@ -81,6 +94,8 @@ main() {
 
     if [[ ! -d "$cache_dir" ]]; then
         mkdir -p "$cache_dir"
+        chown "$PUID:$PGID" "$cache_dir"
+        chmod "$UMASK" "$cache_dir"
     fi
 
     local src_file
