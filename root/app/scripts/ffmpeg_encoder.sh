@@ -32,6 +32,14 @@ check_ffmpeg() {
     fi
 }
 
+# function to check if ffprobe is installed
+check_ffprobe() {
+    if ! command -v ffprobe &> /dev/null; then
+        echo -e "\e[31m\e[1m[cruix-video-archiver] error: ffprobe not found.\e[0m"
+        exit 1
+    fi
+}
+
 # function to load the list of normalized files
 load_normalized_list() {
     if [[ ! -f "$normalized_list_file" ]]; then
@@ -43,13 +51,15 @@ load_normalized_list() {
 
 # function to save to the normalized list
 save_to_normalized_list() {
-    echo "$1" >> "$normalized_list_file"
+    local file="$1"
+    echo "$file" >> "$normalized_list_file"
     chown "$PUID:$PGID" "$normalized_list_file"
 }
 
 # function to log a failed file
 log_failed_file() {
-    echo "$1" >> "$failed_log_file"
+    local file="$1"
+    echo "$file" >> "$failed_log_file"
     chown "$PUID:$PGID" "$failed_log_file"
 }
 
@@ -66,16 +76,31 @@ wait_for_file_release() {
 process_file() {
     local src_file="$1"
     local output_file
-
-    output_file="${cache_dir}/$(basename "${src_file%.*}.mkv")"
+    output_file="$cache_dir/$(basename "${src_file%.*}.mkv")"
 
     echo -e "\e[32m\e[1m[cruix-video-archiver] processing: $src_file\e[0m"
 
-    runuser -u "#$PUID" -g "#$PGID" -- ffmpeg -y -i "$src_file" -map 0 -c:v copy -c:s copy -c:a pcm_s16le -af "loudnorm=I=-14:TP=-1:LRA=8" -loglevel verbose -stats "temp_audio.wav" && \
-    runuser -u "#$PUID" -g "#$PGID" -- ffmpeg -y -i "$src_file" -i "temp_audio.wav" -map 0:v -map 1:a -map 0:s? -c:v copy -c:a aac -b:a 320k -c:s copy "$output_file" && \
-    rm "temp_audio.wav"
-    local exit_code=$?
+    # extract all audio tracks separately using ffprobe
+    local map_audio=""
+    local index=0
+    while ffprobe -v error -select_streams a:$index -show_entries stream=index -of default=noprint_wrappers=1 "$src_file"; do
+        ffmpeg -y -i "$src_file" -map 0:a:$index -c:a pcm_s16le "$cache_dir/audio_$index.wav"
+        map_audio+=" -i \"$cache_dir/audio_$index.wav\""
+        ((index++))
+    done
 
+    # normalize each audio track
+    for file in "$cache_dir"/audio_*.wav; do
+        ffmpeg -y -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=8" "${file%.wav}_norm.wav"
+        mv "${file%.wav}_norm.wav" "$file"
+    done
+
+    # reassemble the mkv without modifying video or subtitles
+    local ffmpeg_command
+    ffmpeg_command="ffmpeg -y -i \"$src_file\" $map_audio -map 0:v -map 0:s? -c:v copy -c:a aac -b:a 320k -c:s copy \"$output_file\""
+    eval "$ffmpeg_command"
+
+    local exit_code=$?
     sync
 
     if [[ -f "$output_file" && $exit_code -eq 0 ]]; then
@@ -100,6 +125,7 @@ process_file() {
 # main function
 main() {
     check_ffmpeg
+    check_ffprobe
     load_normalized_list
 
     if [[ ! -d "$cache_dir" ]]; then
