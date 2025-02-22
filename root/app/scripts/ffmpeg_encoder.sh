@@ -82,6 +82,8 @@ process_file() {
     local audio_tracks
     audio_tracks=$(ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 "$src_file" | wc -l)
 
+    echo -e "\e[32m\e[1m[cruix-video-archiver] detected tracks: $audio_tracks\e[0m"
+
     # iterate over audio tracks using a for loop with a maximum count
     for ((index = 0; index < audio_tracks; index++)); do
         if ffprobe -v error -select_streams a:$index -show_entries stream=index -of default=noprint_wrappers=1 "$src_file"; then
@@ -100,7 +102,10 @@ process_file() {
 
     # reassemble the mkv without modifying video or subtitles
     local ffmpeg_command
-    ffmpeg_command="ffmpeg -y -i \"$src_file\" $map_audio -map 0:v -map 0:s? -c:v copy -c:a aac -b:a 320k -c:s copy \"$output_file\""
+    ffmpeg_command="ffmpeg -y -i \"$src_file\" $map_audio -map 0:v -map 0:s? -c:v copy -map 0:a -c:a aac -b:a 320k -c:s copy \"$output_file\""
+
+    echo -e "\e[32m\e[1m[cruix-video-archiver] ffmpeg: $ffmpeg_command\e[0m"
+
     eval "$ffmpeg_command"
 
     local exit_code=$?
