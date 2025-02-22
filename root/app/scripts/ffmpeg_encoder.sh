@@ -82,11 +82,18 @@ process_file() {
 
     # extract all audio tracks separately using ffprobe
     local map_audio=""
-    local index=0
-    while ffprobe -v error -select_streams a:$index -show_entries stream=index -of default=noprint_wrappers=1 "$src_file"; do
-        ffmpeg -y -i "$src_file" -map 0:a:$index -c:a pcm_s16le "$cache_dir/audio_$index.wav"
-        map_audio+=" -i \"$cache_dir/audio_$index.wav\""
-        ((index++))
+    local index
+    local audio_tracks
+    audio_tracks=$(ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 "$src_file" | wc -l)
+
+    # iterate over audio tracks using a for loop with a maximum count
+    for ((index = 0; index < audio_tracks; index++)); do
+        if ffprobe -v error -select_streams a:$index -show_entries stream=index -of default=noprint_wrappers=1 "$src_file"; then
+            ffmpeg -y -i "$src_file" -map 0:a:$index -c:a pcm_s16le "$cache_dir/audio_$index.wav"
+            map_audio+=" -i \"$cache_dir/audio_$index.wav\""
+        else
+            break  # no more audio tracks
+        fi
     done
 
     # normalize each audio track
