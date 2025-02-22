@@ -44,8 +44,6 @@ check_ffprobe() {
 load_normalized_list() {
     if [[ ! -f "$normalized_list_file" ]]; then
         touch "$normalized_list_file"
-        chown "$PUID:$PGID" "$normalized_list_file"
-        chmod "$UMASK" "$normalized_list_file"
     fi
 }
 
@@ -53,14 +51,12 @@ load_normalized_list() {
 save_to_normalized_list() {
     local file="$1"
     echo "$file" >> "$normalized_list_file"
-    chown "$PUID:$PGID" "$normalized_list_file"
 }
 
 # function to log a failed file
 log_failed_file() {
     local file="$1"
     echo "$file" >> "$failed_log_file"
-    chown "$PUID:$PGID" "$failed_log_file"
 }
 
 # function to wait for file release
@@ -112,8 +108,6 @@ process_file() {
 
     if [[ -f "$output_file" && $exit_code -eq 0 ]]; then
         echo -e "\e[32m\e[1m[cruix-video-archiver] successfully processed: $output_file\e[0m"
-        chown "$PUID:$PGID" "$output_file"
-        chmod "$UMASK" "$output_file"
 
         sleep 5
         wait_for_file_release "$src_file"
@@ -137,8 +131,6 @@ main() {
 
     if [[ ! -d "$cache_dir" ]]; then
         mkdir -p "$cache_dir"
-        chown "$PUID:$PGID" "$cache_dir"
-        chmod "$UMASK" "$cache_dir"
     fi
 
     local src_file
