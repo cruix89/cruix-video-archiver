@@ -94,9 +94,9 @@ process_file() {
         fi
     done
 
-    # normalize each audio track with loudnorm for best quality
+    # normalize each audio track with loudnorm for best quality and 320 kbps bitrate
     for file in "$cache_dir"/audio_*.mp3; do
-        ffmpeg -y -loglevel info -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=11:offset=0.0:measured_I=-16.0:measured_LRA=7.0:measured_TP=-1.0:measured_thresh=-33.0" "${file%.mp3}_norm.mp3"
+        ffmpeg -y -loglevel debug -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=11:offset=0.0:measured_I=-16.0:measured_LRA=7.0:measured_TP=-1.0:measured_thresh=-33.0" -b:a 320k "${file%.mp3}_norm.mp3"
         mv "${file%.mp3}_norm.mp3" "$file"
     done
 
