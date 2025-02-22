@@ -87,17 +87,17 @@ process_file() {
     # iterate over audio tracks using a for loop with a maximum count
     for ((index = 0; index < audio_tracks; index++)); do
         if ffprobe -v error -select_streams a:$index -show_entries stream=index -of default=noprint_wrappers=1 "$src_file"; then
-            ffmpeg -y -loglevel info -i "$src_file" -map 0:a:$index -c:a pcm_s16le "$cache_dir/audio_$index.wav"
-            map_audio+=" -i \"$cache_dir/audio_$index.wav\""
+            ffmpeg -y -loglevel info -i "$src_file" -map 0:a:$index -c:a libmp3lame -b:a 320k "$cache_dir/audio_$index.mp3"
+            map_audio+=" -i \"$cache_dir/audio_$index.mp3\""
         else
             break  # no more audio tracks
         fi
     done
 
-    # normalize each audio track
-    for file in "$cache_dir"/audio_*.wav; do
-        ffmpeg -y -loglevel info -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=8" "${file%.wav}_norm.wav"
-        mv "${file%.wav}_norm.wav" "$file"
+    # normalize each audio track with loudnorm for best quality
+    for file in "$cache_dir"/audio_*.mp3; do
+        ffmpeg -y -loglevel info -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=11:offset=0.0:measured_I=-16.0:measured_LRA=7.0:measured_TP=-1.0:measured_thresh=-33.0" "${file%.mp3}_norm.mp3"
+        mv "${file%.mp3}_norm.mp3" "$file"
     done
 
     # reassemble the mkv without modifying video or subtitles
