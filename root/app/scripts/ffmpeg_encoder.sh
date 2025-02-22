@@ -102,7 +102,7 @@ process_file() {
 
     # reassemble the mkv without modifying video or subtitles
     local ffmpeg_command
-    ffmpeg_command="ffmpeg -y -loglevel info -i \"$src_file\" $map_audio -map 0:v -map 0:s? -c:v copy -map 0:a -c:a aac -b:a 320k -c:s copy \"$output_file\""
+    ffmpeg_command="ffmpeg -y -loglevel info -i \"$src_file\" $map_audio -map 0:v:0 -map 0:s? -c:v copy -map 0:a -c:a aac -b:a 320k -c:s copy \"$output_file\""
 
     echo -e "\e[32m\e[1m[cruix-video-archiver] ffmpeg: $ffmpeg_command\e[0m"
 
