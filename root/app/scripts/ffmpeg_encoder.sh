@@ -87,7 +87,7 @@ process_file() {
     # iterate over audio tracks using a for loop with a maximum count
     for ((index = 0; index < audio_tracks; index++)); do
         if ffprobe -v error -select_streams a:$index -show_entries stream=index -of default=noprint_wrappers=1 "$src_file"; then
-            ffmpeg -y -i "$src_file" -map 0:a:$index -c:a pcm_s16le "$cache_dir/audio_$index.wav"
+            ffmpeg -y -loglevel info -i "$src_file" -map 0:a:$index -c:a pcm_s16le "$cache_dir/audio_$index.wav"
             map_audio+=" -i \"$cache_dir/audio_$index.wav\""
         else
             break  # no more audio tracks
@@ -96,13 +96,13 @@ process_file() {
 
     # normalize each audio track
     for file in "$cache_dir"/audio_*.wav; do
-        ffmpeg -y -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=8" "${file%.wav}_norm.wav"
+        ffmpeg -y -loglevel info -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=8" "${file%.wav}_norm.wav"
         mv "${file%.wav}_norm.wav" "$file"
     done
 
     # reassemble the mkv without modifying video or subtitles
     local ffmpeg_command
-    ffmpeg_command="ffmpeg -y -i \"$src_file\" $map_audio -map 0:v -map 0:s? -c:v copy -map 0:a -c:a aac -b:a 320k -c:s copy \"$output_file\""
+    ffmpeg_command="ffmpeg -y -loglevel info -i \"$src_file\" $map_audio -map 0:v -map 0:s? -c:v copy -map 0:a -c:a aac -b:a 320k -c:s copy \"$output_file\""
 
     echo -e "\e[32m\e[1m[cruix-video-archiver] ffmpeg: $ffmpeg_command\e[0m"
 
