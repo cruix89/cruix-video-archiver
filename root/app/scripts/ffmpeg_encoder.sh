@@ -122,6 +122,19 @@ process_file() {
 
         find "$cache_dir" -type f -delete
         echo -e "\e[32m\e[1m[cruix-video-archiver] cache cleaned.\e[0m"
+
+        # capture loudness and codec information using ebur128 filter
+        loudness_info=$(ffprobe -v error -i "$output_file" -filter_complex ebur128=framelog=verbose -show_entries frame=mean_volume -of csv=p=0)
+        codec_info=$(ffprobe -v error -i "$output_file" -show_entries stream=codec_name -of default=noprint_wrappers=1)
+
+        # create a log entry with the filename, loudness, and codec information
+        log_file="/config/logs/$(basename "$output_file").log"
+        echo "File: $output_file" > "$log_file"
+        echo "Loudness: $loudness_info" >> "$log_file"
+        echo "Codec: $codec_info" >> "$log_file"
+
+        echo -e "\e[32m\e[1m[cruix-video-archiver] log created: $log_file\e[0m"
+
     else
         log_failed_file "$src_file"
         echo -e "\e[31m\e[1m[cruix-video-archiver] error: process failed for: $src_file\e[0m"
