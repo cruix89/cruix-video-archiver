@@ -88,7 +88,7 @@ process_file() {
     for ((index = 0; index < audio_tracks; index++)); do
         if ffprobe -v error -select_streams a:$index -show_entries stream=index -of default=noprint_wrappers=1 "$src_file"; then
             ffmpeg -y -loglevel info -i "$src_file" -map 0:a:$index -c:a libmp3lame -b:a 320k "$cache_dir/audio_$index.mp3"
-            map_audio+=" -i \"$cache_dir/audio_$index.mp3\""
+            map_audio+=" -i \"$cache_dir/audio_${index}_norm.mp3\""
         else
             break  # no more audio tracks
         fi
@@ -96,7 +96,7 @@ process_file() {
 
     # normalize each audio track with loudnorm for best quality and 320 kbps bitrate
     for file in "$cache_dir"/audio_*.mp3; do
-        ffmpeg -y -loglevel debug -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=11:offset=0.0:measured_I=-16.0:measured_LRA=7.0:measured_TP=-1.0:measured_thresh=-33.0" -b:a 320k "${file%.mp3}_norm.mp3"
+        ffmpeg -y -loglevel debug -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=11" -b:a 320k "${file%.mp3}_norm.mp3"
         mv "${file%.mp3}_norm.mp3" "$file"
     done
 
