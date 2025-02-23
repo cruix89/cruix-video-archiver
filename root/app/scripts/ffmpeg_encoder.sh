@@ -88,7 +88,7 @@ process_file() {
     for ((index = 0; index < audio_tracks; index++)); do
         if ffprobe -v error -select_streams a:$index -show_entries stream=index -of default=noprint_wrappers=1 "$src_file"; then
             ffmpeg -y -loglevel info -i "$src_file" -map 0:a:$index -c:a libmp3lame -b:a 320k "$cache_dir/audio_$index.mp3"
-            map_audio+=" -i \"$cache_dir/audio_${index}_norm.mp3\""
+            map_audio+=" -i \"$cache_dir/audio_${index}.mp3\""
         else
             break  # no more audio tracks
         fi
