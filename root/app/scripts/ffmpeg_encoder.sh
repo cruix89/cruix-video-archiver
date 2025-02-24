@@ -132,6 +132,9 @@ process_file() {
         codec_info=$(ffmpeg -i "$output_file" 2>&1 | grep -oP 'Stream #0:0.*: \K\w+')
 
         # create a log entry with the filename, loudness, and codec information
+        echo -e "File: $output_file"
+        echo -e "Loudness info: $loudness_info"
+        echo -e "Codec info: $codec_info"
         log_file="$log_dir/$(basename "$output_file").log"
         echo "File: $output_file" > "$log_file"
         echo "Loudness: $loudness_info" >> "$log_file"
