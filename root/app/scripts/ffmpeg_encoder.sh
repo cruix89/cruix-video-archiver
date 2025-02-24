@@ -128,15 +128,15 @@ process_file() {
         mkdir -p "$log_dir"
 
        # capture loudness and codec information using ffmpeg
-        loudness_info=$(ffmpeg -i "$output_file" -af "loudnorm=print_format=summary" -f null -)
-        codec_info=$(ffmpeg -i "$output_file")
+        loudness_info=$(ffmpeg -i "${src_file%.*}.mkv" -af "loudnorm=print_format=summary" -f null - 2>&1)
+        codec_info=$(ffmpeg -i "${src_file%.*}.mkv" 2>&1)
 
         # create a log entry with the filename, loudness, and codec information
-        echo -e "processed file: $output_file"
+        echo -e "processed file: ${src_file%.*}.mkv"
         echo -e "LUFS info: $loudness_info"
         echo -e "CODEC info: $codec_info"
         log_file="$log_dir/$(basename "$output_file").log"
-        echo "processed file: $output_file" > "$log_file"
+        echo "processed file: ${src_file%.*}.mkv" > "$log_file"
         echo "LUFS info: $loudness_info" >> "$log_file"
         echo "CODEC info: $codec_info" >> "$log_file"
 
