@@ -97,7 +97,7 @@ process_file() {
 
     # normalize each audio track with loudnorm for best quality and 320 kbps bitrate
     for file in "$cache_dir"/audio_*.mp3; do
-        ffmpeg -y -loglevel debug -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=11" -b:a 320k "${file%.mp3}_norm.mp3"
+        ffmpeg -y -loglevel debug -i "$file" -af "loudnorm=I=-27:TP=-2:LRA=18" -b:a 320k "${file%.mp3}_norm.mp3"
         mv "${file%.mp3}_norm.mp3" "$file"
     done
 
@@ -127,9 +127,9 @@ process_file() {
         # create log dir
         mkdir -p "$log_dir"
 
-        # capture loudness and codec information using loudnorm filter
-        loudness_info=$(ffprobe -v error -i "$output_file" -af "loudnorm=I=-14:TP=-1:LRA=11" -show_entries stream=average_frame_level -of csv=p=0)
-        codec_info=$(ffprobe -v error -i "$output_file" -show_entries stream=codec_name -of default=noprint_wrappers=1)
+       # capture loudness and codec information using ffmpeg
+        loudness_info=$(ffmpeg -i "$output_file" -filter_complex "loudnorm=I=-27:TP=-2:LRA=18" -f null - 2>&1 | grep -oP 'Input Integrated: \K[-0-9.]+')
+        codec_info=$(ffmpeg -i "$output_file" 2>&1 | grep -oP 'Stream #0:0.*: \K\w+')
 
         # create a log entry with the filename, loudness, and codec information
         log_file="$log_dir/$(basename "$output_file").log"
@@ -138,7 +138,6 @@ process_file() {
         echo "Codec: $codec_info" >> "$log_file"
 
         echo -e "\e[32m\e[1m[cruix-video-archiver] log created: $log_file\e[0m"
-
     else
         log_failed_file "$src_file"
         echo -e "\e[31m\e[1m[cruix-video-archiver] error: process failed for: $src_file\e[0m"
