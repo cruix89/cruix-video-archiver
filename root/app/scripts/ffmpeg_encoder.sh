@@ -23,7 +23,6 @@ fi
 normalized_list_file="${normalized_list_file:-/config/ffmpeg_cache.txt}"
 cache_dir="/config/cache"
 failed_log_file="/config/ffmpeg_failed_files_cache.txt"
-log_dir="/config/logs"
 
 # function to check if ffmpeg is installed
 check_ffmpeg() {
@@ -83,7 +82,7 @@ process_file() {
     local audio_tracks
     audio_tracks=$(ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 "$src_file" | wc -l)
 
-    echo -e "\e[32m\e[1m[cruix-video-archiver] detected tracks: $audio_tracks\e[0m"
+    echo -e "\e[33m\e[1m[cruix-video-archiver] detected tracks: $audio_tracks\e[0m"
 
     # iterate over audio tracks
     for ((index = 0; index < audio_tracks; index++)); do
@@ -92,18 +91,14 @@ process_file() {
             ffmpeg -y -loglevel info -i "$src_file" -map 0:a:$index -c:a aac -b:a 768k "$cache_dir/audio_${index}.aac"
             map_audio+=" -i \"$cache_dir/audio_${index}.aac\""
         else
+            echo -e "\e[32m\e[1m[cruix-video-archiver] tracks extracted successfully: $audio_tracks\e[0m"
             break  # no more audio tracks
         fi
     done
 
-    # create log dir
-        mkdir -p "$log_dir"
-    log_file="$log_dir/$(basename "$output_file").log"
-    echo -e "\e[32m\e[1m[cruix-video-archiver] log created: $log_file\e[0m"
-
     # normalize each audio track with loudnorm
     for file in "$cache_dir"/audio_*.aac; do
-        ffmpeg -y -loglevel debug -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=11:print_format=summary" -c:a aac -b:a 768k "${file%.aac}_norm.aac" > "$log_file"
+        ffmpeg -y -loglevel debug -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=11:print_format=summary" -c:a aac -b:a 768k "${file%.aac}_norm.aac"
         mv "${file%.aac}_norm.aac" "$file"  # replace original file with normalized version
     done
 
@@ -128,7 +123,6 @@ process_file() {
         save_to_normalized_list "${src_file%.*}.mkv"
 
         find "$cache_dir" -type f -delete
-        echo -e "\e[32m\e[1m[cruix-video-archiver] cache cleaned.\e[0m"
 
     else
         log_failed_file "$src_file"
