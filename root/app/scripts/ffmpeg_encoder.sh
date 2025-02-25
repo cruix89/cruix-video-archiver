@@ -85,25 +85,26 @@ process_file() {
 
     echo -e "\e[32m\e[1m[cruix-video-archiver] detected tracks: $audio_tracks\e[0m"
 
-    # iterate over audio tracks using a for loop with a maximum count
+    # iterate over audio tracks
     for ((index = 0; index < audio_tracks; index++)); do
         if ffprobe -v error -select_streams a:$index -show_entries stream=index -of default=noprint_wrappers=1 "$src_file"; then
-            ffmpeg -y -loglevel info -i "$src_file" -map 0:a:$index -c:a libmp3lame -b:a 320k "$cache_dir/audio_$index.mp3"
-            map_audio+=" -i \"$cache_dir/audio_${index}.mp3\""
+            # extract audio in original format, convert to AAC
+            ffmpeg -y -loglevel info -i "$src_file" -map 0:a:$index -c:a aac -b:a 768k "$cache_dir/audio_${index}.aac"
+            map_audio+=" -i \"$cache_dir/audio_${index}.aac\""
         else
             break  # no more audio tracks
         fi
     done
 
-    # normalize each audio track with loudnorm for best quality and 320 kbps bitrate
-    for file in "$cache_dir"/audio_*.mp3; do
-        ffmpeg -y -loglevel debug -i "$file" -af "loudnorm=I=-27:TP=-2:LRA=18" -b:a 320k "${file%.mp3}_norm.mp3"
-        mv "${file%.mp3}_norm.mp3" "$file"
+    # normalize each audio track with loudnorm
+    for file in "$cache_dir"/audio_*.aac; do
+        ffmpeg -y -loglevel debug -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=11:print_format=summary" -c:a aac -b:a 768k "${file%.aac}_norm.aac"
+        mv "${file%.aac}_norm.aac" "$file"  # replace original file with normalized version
     done
 
-    # reassemble the mkv without modifying video or subtitles
+    # reassemble the MKV with normalized audio
     local ffmpeg_command
-    ffmpeg_command="ffmpeg -y -loglevel info -i \"$src_file\" $map_audio -map 0:v:0 -map 0:s? -c:v copy -map 0:a -c:a aac -b:a 320k -c:s copy \"$output_file\""
+    ffmpeg_command="ffmpeg -y -loglevel info -i \"$src_file\" $map_audio -map 0:v:0 -map 0:s? -c:v copy -af loudnorm=I=-14:TP=-1:LRA=11:print_format=summary -c:a aac -b:a 768k -c:s copy \"$output_file\""
 
     echo -e "\e[32m\e[1m[cruix-video-archiver] ffmpeg: $ffmpeg_command\e[0m"
 
