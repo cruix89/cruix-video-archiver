@@ -74,7 +74,7 @@ process_file() {
     local output_file
     output_file="$cache_dir/$(basename "${src_file%.*}.mkv")"
 
-    echo -e "\e[32m\e[1m[cruix-video-archiver] processing: $src_file\e[0m"
+    echo -e "\e[32m\e[1m[cruix-video-archiver] starting process in: $src_file\e[0m"
 
     # extract all audio tracks separately using ffprobe
     local map_audio=""

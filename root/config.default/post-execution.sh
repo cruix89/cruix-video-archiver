@@ -8,8 +8,6 @@ cache_dir="/config/cache"
 # remove cache files in the output directory and process post-processing scripts
 if [ -d "$downloads_dir" ]; then
 
-  echo -e "\e[32m\e[1m[cruix-video-archiver] purging cache files from /cache\e[0m"
-
   sleep '5'
   mkdir -p $cache_dir
   find $cache_dir -type f -delete
