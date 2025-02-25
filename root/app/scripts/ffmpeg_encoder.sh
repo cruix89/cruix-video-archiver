@@ -90,8 +90,8 @@ process_file() {
             # extract audio in original format, convert to AAC
             ffmpeg -y -loglevel info -i "$src_file" -map 0:a:$index -c:a aac -b:a 768k "$cache_dir/audio_${index}.aac"
             map_audio+=" -i \"$cache_dir/audio_${index}.aac\""
-        else
             echo -e "\e[32m\e[1m[cruix-video-archiver] tracks extracted successfully: $audio_tracks\e[0m"
+        else
             break  # no more audio tracks
         fi
     done
