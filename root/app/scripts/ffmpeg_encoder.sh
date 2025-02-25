@@ -96,15 +96,19 @@ process_file() {
         fi
     done
 
+    # create log dir
+        mkdir -p "$log_dir"
+    log_file="$log_dir/$(basename "$output_file").log"
+
     # normalize each audio track with loudnorm
     for file in "$cache_dir"/audio_*.aac; do
-        ffmpeg -y -loglevel debug -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=11:print_format=summary" -c:a aac -b:a 768k "${file%.aac}_norm.aac"
+        ffmpeg -y -loglevel debug -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=11:print_format=summary" -c:a aac -b:a 768k "${file%.aac}_norm.aac" >> "$log_file"
         mv "${file%.aac}_norm.aac" "$file"  # replace original file with normalized version
     done
 
     # reassemble the MKV with normalized audio
     local ffmpeg_command
-    ffmpeg_command="ffmpeg -y -loglevel info -i \"$src_file\" $map_audio -map 0:v:0 -map 0:s? -c:v copy -af loudnorm=I=-14:TP=-1:LRA=11:print_format=summary -c:a aac -b:a 768k -c:s copy \"$output_file\""
+    ffmpeg_command="ffmpeg -y -loglevel info -i \"$src_file\" $map_audio -map 0:v:0 -map 0:s? -c:v copy -c:a copy -b:a copy -c:s copy \"$output_file\""
 
     echo -e "\e[32m\e[1m[cruix-video-archiver] ffmpeg: $ffmpeg_command\e[0m"
 
@@ -124,22 +128,6 @@ process_file() {
 
         find "$cache_dir" -type f -delete
         echo -e "\e[32m\e[1m[cruix-video-archiver] cache cleaned.\e[0m"
-
-        # create log dir
-        mkdir -p "$log_dir"
-
-       # capture loudness and codec information using ffmpeg
-        loudness_info=$(ffmpeg -i "${src_file%.*}.mkv" -af "loudnorm=print_format=summary" -f null - 2>&1)
-        codec_info=$(ffmpeg -i "${src_file%.*}.mkv" 2>&1)
-
-        # create a log entry with the filename, loudness, and codec information
-        echo -e "processed file: ${src_file%.*}.mkv"
-        echo -e "LUFS info: $loudness_info"
-        echo -e "CODEC info: $codec_info"
-        log_file="$log_dir/$(basename "$output_file").log"
-        echo "processed file: ${src_file%.*}.mkv" > "$log_file"
-        echo "LUFS info: $loudness_info" >> "$log_file"
-        echo "CODEC info: $codec_info" >> "$log_file"
 
         echo -e "\e[32m\e[1m[cruix-video-archiver] log created: $log_file\e[0m"
     else
