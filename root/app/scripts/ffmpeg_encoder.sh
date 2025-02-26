@@ -77,7 +77,7 @@ process_file() {
     echo -e "\e[32m\e[1m[cruix-video-archiver] starting process in: $src_file\e[0m"
 
     # extract video track
-    ffmpeg -y -loglevel info -i "$src_file" -map 0:v:0 -c:v copy "$cache_dir/video_track.mkv"
+    ffmpeg -y -loglevel info -i "$src_file" -map 0:v:0 -c:v libx264 -crf 18 -preset slow "$cache_dir/video_track.mp4"
     echo -e "\e[32m\e[1m[cruix-video-archiver] video track extracted to: $cache_dir\e[0m"
 
     # extract all subtitle tracks
