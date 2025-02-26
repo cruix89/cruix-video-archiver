@@ -63,7 +63,7 @@ log_failed_file() {
 wait_for_file_release() {
     local file="$1"
     while lsof "$file" &> /dev/null; do
-        echo -e "\e[33m\e[1m[cruix-video-archiver] waiting for file to be released: $file\e[0m"
+        echo -e "\e[32m\e[1m[cruix-video-archiver] waiting for file to be released: $file\e[0m"
         sleep 5
     done
 }
@@ -90,7 +90,7 @@ process_file() {
     local audio_tracks
     audio_tracks=$(ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 "$src_file" | wc -l)
 
-    echo -e "\e[33m\e[1m[cruix-video-archiver] audio tracks detected: $audio_tracks\e[0m"
+    echo -e "\e[32m\e[1m[cruix-video-archiver] audio tracks detected: $audio_tracks\e[0m"
 
     # iterate over audio tracks
     for ((index = 0; index < audio_tracks; index++)); do
