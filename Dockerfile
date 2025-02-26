@@ -28,7 +28,8 @@ RUN apt update && apt install -y \
         libbrotli-dev \
         gnupg \
         ffmpeg \
-        gosu && \
+        gosu \
+        mkvtoolnix && \
     apt clean && rm -rf /var/lib/apt/lists/*
 
 # install yt-dlp using pip3

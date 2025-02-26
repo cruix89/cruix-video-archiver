@@ -76,6 +76,14 @@ process_file() {
 
     echo -e "\e[32m\e[1m[cruix-video-archiver] starting process in: $src_file\e[0m"
 
+    # extract video track
+    ffmpeg -y -loglevel info -i "$src_file" -map 0:v:0 -c:v copy "$cache_dir/video_track.h264"
+    echo -e "\e[32m\e[1m[cruix-video-archiver] video track extracted to: $cache_dir\e[0m"
+
+    # extract all subtitle tracks
+    ffmpeg -y -loglevel info -i "$src_file" -map 0:s -c:s copy "$cache_dir/subtitles_track_%d.srt"
+    echo -e "\e[32m\e[1m[cruix-video-archiver] subtitles tracks extracted to: $cache_dir\e[0m"
+
     # extract all audio tracks separately using ffprobe
     local map_audio=""
     local index
@@ -102,13 +110,23 @@ process_file() {
         mv "${file%.aac}_norm.aac" "$file"  # replace original file with normalized version
     done
 
-    # reassemble the MKV with normalized audio
-    local ffmpeg_command
-    ffmpeg_command="ffmpeg -y -loglevel info -i \"$src_file\" $map_audio -map 0:v:0 -map 0:s? -c:v copy -c:a copy -c:s copy \"$output_file\""
+    # reassemble the MKV with mkvmerge
+    local mkvmerge_command
+    mkvmerge_command="mkvmerge -o \"$output_file\" --video-tracks 0 \"$cache_dir/video_track.h264\""
 
-    echo -e "\e[32m\e[1m[cruix-video-archiver] ffmpeg: $ffmpeg_command\e[0m"
+    # add subtitle tracks to mkvmerge command
+    for subtitle in "$cache_dir"/subtitles_track_*.srt; do
+        mkvmerge_command+=" --subtitle-tracks 0 \"$subtitle\""
+    done
 
-    eval "$ffmpeg_command"
+    # add audio tracks to mkvmerge command
+    for file in "$cache_dir"/audio_*.aac; do
+        mkvmerge_command+=" --audio-tracks 0 \"$file\""
+    done
+
+    echo -e "\e[32m\e[1m[cruix-video-archiver] mkvmerge: $mkvmerge_command\e[0m"
+
+    eval "$mkvmerge_command"
 
     local exit_code=$?
     sync
