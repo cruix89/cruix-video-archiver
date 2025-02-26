@@ -115,7 +115,8 @@ process_file() {
     mkvmerge_command="mkvmerge -o \"$output_file\" --video-tracks 0 \"$cache_dir/video_track.mp4\""
 
     # add subtitle tracks to mkvmerge command only if they exist
-    subtitle_tracks=("$cache_dir"/subtitles_track_*.srt)
+    mapfile -d '' subtitle_tracks < <(find "$cache_dir" -maxdepth 1 -type f -name "subtitles_track_*.srt" -print0)
+
     if [[ ${#subtitle_tracks[@]} -gt 0 ]]; then
         for subtitle in "${subtitle_tracks[@]}"; do
             mkvmerge_command+=" --subtitle-tracks 0 \"$subtitle\""
