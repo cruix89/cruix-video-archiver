@@ -114,10 +114,13 @@ process_file() {
     local mkvmerge_command
     mkvmerge_command="mkvmerge -o \"$output_file\" --video-tracks 0 \"$cache_dir/video_track.mp4\""
 
-    # add subtitle tracks to mkvmerge command
-    for subtitle in "$cache_dir"/subtitles_track_*.srt; do
-        mkvmerge_command+=" --subtitle-tracks 0 \"$subtitle\""
-    done
+    # add subtitle tracks to mkvmerge command only if they exist
+    subtitle_tracks=("$cache_dir"/subtitles_track_*.srt)
+    if [[ ${#subtitle_tracks[@]} -gt 0 ]]; then
+        for subtitle in "${subtitle_tracks[@]}"; do
+            mkvmerge_command+=" --subtitle-tracks 0 \"$subtitle\""
+        done
+    fi
 
     # add audio tracks to mkvmerge command
     for file in "$cache_dir"/audio_*.aac; do
