@@ -77,7 +77,7 @@ process_file() {
     echo -e "\e[32m\e[1m[cruix-video-archiver] starting process in: $src_file\e[0m"
 
     # extract video track
-    ffmpeg -y -loglevel info -i "$src_file" -map 0:v:0 -c:v copy "$cache_dir/video_track.h264"
+    ffmpeg -y -loglevel info -i "$src_file" -map 0:v:0 -c:v copy "$cache_dir/video_track.mkv"
     echo -e "\e[32m\e[1m[cruix-video-archiver] video track extracted to: $cache_dir\e[0m"
 
     # extract all subtitle tracks
@@ -90,7 +90,7 @@ process_file() {
     local audio_tracks
     audio_tracks=$(ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 "$src_file" | wc -l)
 
-    echo -e "\e[33m\e[1m[cruix-video-archiver] detected tracks: $audio_tracks\e[0m"
+    echo -e "\e[33m\e[1m[cruix-video-archiver] audio tracks detected: $audio_tracks\e[0m"
 
     # iterate over audio tracks
     for ((index = 0; index < audio_tracks; index++)); do
@@ -98,7 +98,7 @@ process_file() {
             # extract audio in original format, convert to AAC
             ffmpeg -y -loglevel info -i "$src_file" -map 0:a:$index -c:a aac -b:a 768k "$cache_dir/audio_${index}.aac"
             map_audio+=" -i \"$cache_dir/audio_${index}.aac\""
-            echo -e "\e[32m\e[1m[cruix-video-archiver] tracks extracted successfully: $audio_tracks\e[0m"
+            echo -e "\e[32m\e[1m[cruix-video-archiver] audio tracks extracted successfully: $audio_tracks\e[0m"
         else
             break  # no more audio tracks
         fi
