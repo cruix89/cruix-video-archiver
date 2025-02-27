@@ -80,9 +80,22 @@ process_file() {
     ffmpeg -y -loglevel info -i "$src_file" -map 0:v:0 -c:v copy "$cache_dir/video_track.mp4"
     echo -e "\e[32m\e[1m[cruix-video-archiver] video track extracted to: $cache_dir\e[0m"
 
-    # extract all subtitle tracks
-    ffmpeg -y -loglevel info -i "$src_file" -map 0:s -c:s copy "$cache_dir/subtitles_track_%02d.srt"
-    echo -e "\e[32m\e[1m[cruix-video-archiver] subtitles tracks extracted to: $cache_dir\e[0m"
+    # detect the number of subtitle tracks
+    local index_subtitle_tracks
+    local subtitle_tracks
+    subtitle_tracks=$(ffprobe -v error -select_streams s -show_entries stream=index -of csv=p=0 "$src_file" | wc -l)
+
+    echo -e "\e[32m\e[1m[cruix-video-archiver] subtitle tracks detected: $subtitle_tracks\e[0m"
+
+    # iterate over subtitle tracks
+    for ((index_subtitle_tracks = 0; index_subtitle_tracks < subtitle_tracks; index_subtitle_tracks++)); do
+        if ffprobe -v error -select_streams s:$index_subtitle_tracks -show_entries stream=index -of default=noprint_wrappers=1 "$src_file"; then
+            ffmpeg -y -loglevel info -i "$src_file" -map 0:s:$index_subtitle_tracks -c:s copy "$cache_dir/subtitle_tracks_${index_subtitle_tracks}.srt"
+            echo -e "\e[32m\e[1m[cruix-video-archiver] subtitle tracks extracted successfully: $subtitle_tracks\e[0m"
+        else
+            break  # if there are no more subtitle tracks, exit the loop
+        fi
+    done
 
     # extract all audio tracks separately using ffprobe
     local map_audio=""
@@ -115,7 +128,7 @@ process_file() {
     mkvmerge_command="mkvmerge -o \"$output_file\" --video-tracks 0 \"$cache_dir/video_track.mp4\""
 
     # add subtitle tracks to mkvmerge command only if they exist
-    mapfile -d '' subtitle_tracks < <(find "$cache_dir" -maxdepth 1 -type f -name "subtitles_track_*.srt" -print0)
+    mapfile -d '' subtitle_tracks < <(find "$cache_dir" -maxdepth 1 -type f -name "subtitle_tracks_*.srt" -print0)
 
     if [[ ${#subtitle_tracks[@]} -gt 0 ]]; then
         for subtitle in "${subtitle_tracks[@]}"; do
