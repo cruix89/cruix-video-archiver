@@ -74,11 +74,11 @@ process_file() {
     local output_file
     output_file="$cache_dir/$(basename "${src_file%.*}.mkv")"
 
-    echo -e "\e[32m\e[1m[cruix-video-archiver] starting process in: $src_file\e[0m"
+    echo -e "\e[32m\e[1m[cruix-video-archiver] starting ffmpeg normalization process in: $src_file\e[0m"
 
     # extract video track
     ffmpeg -y -loglevel info -i "$src_file" -map 0:v:0 -c:v copy "$cache_dir/video_track.mp4"
-    echo -e "\e[32m\e[1m[cruix-video-archiver] video track extracted successfully: 1\e[0m"
+    echo -e "\e[32m\e[1m[cruix-video-archiver] video tracks extracted successfully: 1\e[0m"
 
     # detect the number of subtitle tracks
     local index_subtitle_tracks
@@ -186,7 +186,7 @@ main() {
         done | head -n 1)
 
     if [[ -z "$src_file" ]]; then
-        echo -e "\e[32m\e[1m[cruix-video-archiver] no unprocessed videos found.\e[0m"
+        echo -e "\e[32m\e[1m[cruix-video-archiver] no unprocessed videos found.... exiting\e[0m"
         exit 0
     fi
 

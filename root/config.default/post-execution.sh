@@ -13,8 +13,6 @@ if [ -d "$downloads_dir" ]; then
   find $cache_dir -type f -delete
   find $cache_dir -type d -empty -mindepth 1 -delete
 
-  echo -e "\e[32m\e[1m[cruix-video-archiver] executing ffmpeg process in the video library...\e[0m"
-
   # post-processing scripts in downloads folder
 
   sleep '5'
