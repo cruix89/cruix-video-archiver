@@ -78,14 +78,14 @@ process_file() {
 
     # extract video track
     ffmpeg -y -loglevel info -i "$src_file" -map 0:v:0 -c:v copy "$cache_dir/video_track.mp4"
-    echo -e "\e[32m\e[1m[cruix-video-archiver] video track extracted to: $cache_dir\e[0m"
+    echo -e "\e[32m\e[1m[cruix-video-archiver] video track extracted successfully: 1\e[0m"
 
     # detect the number of subtitle tracks
     local index_subtitle_tracks
     local subtitle_tracks
     subtitle_tracks=$(ffprobe -v error -select_streams s -show_entries stream=index -of csv=p=0 "$src_file" | wc -l)
 
-    echo -e "\e[32m\e[1m[cruix-video-archiver] subtitle tracks detected: $subtitle_tracks\e[0m"
+    echo -e "\e[32m\e[1m[cruix-video-archiver] subtitle tracks detected: $subtitle_tracks, starting extraction process...\e[0m"
 
     # iterate over subtitle tracks
     for ((index_subtitle_tracks = 0; index_subtitle_tracks < subtitle_tracks; index_subtitle_tracks++)); do
@@ -103,7 +103,7 @@ process_file() {
     local audio_tracks
     audio_tracks=$(ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 "$src_file" | wc -l)
 
-    echo -e "\e[32m\e[1m[cruix-video-archiver] audio tracks detected: $audio_tracks\e[0m"
+    echo -e "\e[32m\e[1m[cruix-video-archiver] audio tracks detected: $audio_tracks, starting extraction process...\e[0m"
 
     # iterate over audio tracks
     for ((index = 0; index < audio_tracks; index++)); do
@@ -119,11 +119,13 @@ process_file() {
 
     # normalize each audio track with loudnorm
     for file in "$cache_dir"/audio_*.aac; do
+        echo -e "\e[32m\e[1m[cruix-video-archiver] starting audio tracks normalization process...\e[0m"
         ffmpeg -y -loglevel debug -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=11:print_format=summary" -c:a aac -b:a 768k "${file%.aac}_norm.aac"
         mv "${file%.aac}_norm.aac" "$file"  # replace original file with normalized version
     done
 
     # reassemble the MKV with mkvmerge
+    echo -e "\e[32m\e[1m[cruix-video-archiver] starting mkvmerge process...\e[0m"
     local mkvmerge_command
     mkvmerge_command="mkvmerge -o \"$output_file\" --video-tracks 0 \"$cache_dir/video_track.mp4\""
 
