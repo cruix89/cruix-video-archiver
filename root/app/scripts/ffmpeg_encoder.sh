@@ -119,13 +119,13 @@ process_file() {
 
     # normalize each audio track with loudnorm
     for file in "$cache_dir"/audio_*.aac; do
-        echo -e "\e[32m\e[1m[cruix-video-archiver] starting audio tracks normalization process...\e[0m"
+        echo -e "\e[32m\e[1m[cruix-video-archiver] starting audio tracks loudness normalization process...\e[0m"
         ffmpeg -y -loglevel debug -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=11:print_format=summary" -c:a aac -b:a 768k "${file%.aac}_norm.aac"
         mv "${file%.aac}_norm.aac" "$file"  # replace original file with normalized version
     done
 
     # reassemble the MKV with mkvmerge
-    echo -e "\e[32m\e[1m[cruix-video-archiver] starting mkvmerge process...\e[0m"
+    echo -e "\e[32m\e[1m[cruix-video-archiver] starting mkvmerge packaging process...\e[0m"
     local mkvmerge_command
     mkvmerge_command="mkvmerge -o \"$output_file\" --video-tracks 0 \"$cache_dir/video_track.mp4\""
 
@@ -151,7 +151,7 @@ process_file() {
     sync
 
     if [[ -f "$output_file" && $exit_code -eq 0 ]]; then
-        echo -e "\e[32m\e[1m[cruix-video-archiver] successfully processed: $output_file\e[0m"
+        echo -e "\e[32m\e[1m[cruix-video-archiver] successfully processed: $output_file... exiting\e[0m"
 
         sleep 5
         wait_for_file_release "$src_file"
@@ -163,7 +163,7 @@ process_file() {
 
     else
         log_failed_file "$src_file"
-        echo -e "\e[31m\e[1m[cruix-video-archiver] error: process failed for: $src_file\e[0m"
+        echo -e "\e[31m\e[1m[cruix-video-archiver] error: process failed for: $src_file... exiting\e[0m"
     fi
 }
 
