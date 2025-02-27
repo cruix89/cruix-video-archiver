@@ -81,7 +81,7 @@ process_file() {
     echo -e "\e[32m\e[1m[cruix-video-archiver] video track extracted to: $cache_dir\e[0m"
 
     # extract all subtitle tracks
-    ffmpeg -y -loglevel info -i "$src_file" -map 0:s -c:s copy "$cache_dir/subtitles_track_%d.srt"
+    ffmpeg -y -loglevel info -i "$src_file" -map 0:s -c:s copy "$cache_dir/subtitles_track_%02d.srt"
     echo -e "\e[32m\e[1m[cruix-video-archiver] subtitles tracks extracted to: $cache_dir\e[0m"
 
     # extract all audio tracks separately using ffprobe
