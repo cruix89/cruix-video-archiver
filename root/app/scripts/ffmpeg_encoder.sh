@@ -109,7 +109,7 @@ process_file() {
     for ((index = 0; index < audio_tracks; index++)); do
         if ffprobe -v error -select_streams a:$index -show_entries stream=index -of default=noprint_wrappers=1 "$src_file"; then
             # extract audio in original format, convert to AAC
-            ffmpeg -y -loglevel info -i "$src_file" -map 0:a:$index -c:a aac -b:a 768k "$cache_dir/audio_${index}.aac"
+            ffmpeg -y -loglevel info -i "$src_file" -map 0:a:$index -c:a aac -b:a 320k -ac 2 -profile:a aac_low "$cache_dir/audio_${index}.aac"
             map_audio+=" -i \"$cache_dir/audio_${index}.aac\""
         else
             break  # no more audio tracks
@@ -120,7 +120,7 @@ process_file() {
     # normalize each audio track with loudnorm
     for file in "$cache_dir"/audio_*.aac; do
         echo -e "\e[32m\e[1m[cruix-video-archiver] starting audio tracks loudness normalization process...\e[0m"
-        ffmpeg -y -loglevel debug -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=11:print_format=summary" -c:a aac -b:a 768k "${file%.aac}_norm.aac"
+        ffmpeg -y -loglevel debug -i "$file" -af "loudnorm=I=-14:TP=-1:LRA=11:print_format=summary" -c:a aac -b:a 320k -ac 2 -profile:a aac_low "${file%.aac}_norm.aac"
         mv "${file%.aac}_norm.aac" "$file"  # replace original file with normalized version
     done
 
