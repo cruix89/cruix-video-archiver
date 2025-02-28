@@ -114,7 +114,7 @@ docker run
 
 
 - **ffmpeg_failed_files_cache.txt**  
-  this cache stores library files that were corrupted and removed by the system. If this file appears in your /config, examine the files and add another link to download the file again if you want.
+  this cache stores library files that were corrupted and filed in the process. If this file appears in your /config, examine the files.
 
 
 - **links.txt**  
