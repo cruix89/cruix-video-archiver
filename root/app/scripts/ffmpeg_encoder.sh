@@ -91,9 +91,9 @@ process_file() {
     for ((index_subtitle_tracks = 0; index_subtitle_tracks < subtitle_tracks; index_subtitle_tracks++)); do
         if ffprobe -v error -select_streams s:$index_subtitle_tracks -show_entries stream=index -of default=noprint_wrappers=1 "$src_file"; then
             ffmpeg -y -loglevel info -i "$src_file" -map 0:s:$index_subtitle_tracks -c:s copy "$cache_dir/subtitle_tracks_${index_subtitle_tracks}.srt"
-            echo -e "\e[32m\e[1m[cruix-video-archiver] subtitle tracks extracted successfully: $subtitle_tracks\e[0m"
         else
             break  # if there are no more subtitle tracks, exit the loop
+            echo -e "\e[32m\e[1m[cruix-video-archiver] subtitle tracks extracted successfully: $subtitle_tracks\e[0m"
         fi
     done
 
@@ -111,9 +111,9 @@ process_file() {
             # extract audio in original format, convert to AAC
             ffmpeg -y -loglevel info -i "$src_file" -map 0:a:$index -c:a aac -b:a 768k "$cache_dir/audio_${index}.aac"
             map_audio+=" -i \"$cache_dir/audio_${index}.aac\""
-            echo -e "\e[32m\e[1m[cruix-video-archiver] audio tracks extracted successfully: $audio_tracks\e[0m"
         else
             break  # no more audio tracks
+            echo -e "\e[32m\e[1m[cruix-video-archiver] audio tracks extracted successfully: $audio_tracks\e[0m"
         fi
     done
 
