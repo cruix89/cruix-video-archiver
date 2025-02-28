@@ -189,7 +189,7 @@ Exemple:
 - **unsupported arguments**
  ```plaintext
   --config-location, hardcoded to /config/args.conf.
-  --batch-file, hardcoded to /config/channels.txt.
+  --batch-file, hardcoded to /config/links.txt.
   ```
   
 ---
