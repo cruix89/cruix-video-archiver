@@ -98,15 +98,7 @@ docker run
 ## 📂: CONFIGURATION
 
 - **cache folder**  
-  temporary directory where files are processed, the script automatically cleans the directory. 
-
-
-- **logs folder**  
-  all system logs are stored in this directory and restarted with each run for better space and process control.
-
-
-- **recycle-bin folder**  
-  directory where unnecessary thumbnails and corrupted files are moved. The directory stores files for 7 days, check the files you want to check within this period.
+  temporary directory where files are processed, the script automatically cleans the directory after the process. 
 
   
 - **archive.txt**  
