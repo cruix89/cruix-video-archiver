@@ -64,7 +64,6 @@ a fully automated docker image to easily download and manage videos based in YT 
 docker run
   -d
   --name='cruix-video-archiver'
-  --privileged=true
   -e TZ="America/Sao_Paulo"
   -e 'yt_dlp_interval'='1h'
   -e 'PUID'='1000'
