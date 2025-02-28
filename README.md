@@ -114,7 +114,7 @@ docker run
 
 
 - **ffmpeg_failed_files_cache.txt**  
-  this cache stores library files that were corrupted and filed in the process. If this file appears in your /config, examine the files.
+  this cache stores library files that were corrupted and failed in the process. If this file appears in your /config, examine the source files.
 
 
 - **links.txt**  
@@ -143,7 +143,7 @@ docker run
   ```
 
 - **post-execution.sh**  
-  these are the script that run before and after downloads to process and manage the music library.
+  these are the script that run before and after the downloads to process and manage the video files normalization.
 
 ---
 
