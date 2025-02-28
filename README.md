@@ -39,17 +39,17 @@ a fully automated docker image to easily download and manage videos based in YT 
   includes support for SponsorBlock, Geo Bypass, Proxy, Metadata, and more.
 
 - **`ytsearch:` function**  
-  great function that allows you to download files by keyword search. see how to use it in the "Tips and Tricks" section
+  great function that allows you to download files by keyword search. See how to use it in the "Tips and Tricks" section
 
 - **custom output folder function**  
-  great function that allows you to download files in a custom output folder. see how to use it in the "Tips and Tricks" section
+  great function that allows you to download files in a custom output folder. See how to use it in the "Tips and Tricks" section
 
 - **smart caches and config files**  
   folders, cache and configuration files in the /config directory for full control of execution processes.
 
 - **LUFS-based normalization**  
-  video processing using [ffmpeg](https://github.com/FFmpeg/FFmpeg) to calculate the audio LUFS and normalize the entire library,  
-  using the same parameters that major streaming platforms use, improving the sound experience and reducing volume differences between different sounds
+  video processing using [ffmpeg](https://github.com/FFmpeg/FFmpeg) to calculate the audio LUFS and normalize your entire /downloads library,  
+  using the same parameters that major streaming platforms use, improving the sound experience and reducing volume differences between different media sources
 
 - **designed for excellent compatibility with large media center projects**  
   the library structure is organized for great viewing on [plex](https://github.com/plexinc/pms-docker) and [jellyfin](https://jellyfin.org/docs/general/installation/container/)
