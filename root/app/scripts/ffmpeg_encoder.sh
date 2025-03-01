@@ -181,6 +181,7 @@ main() {
             if ! grep -Fxq "$file" "$normalized_list_file"; then
                 echo "$file"
             fi
+            sleep 1
         done | head -n 1)
 
     if [[ -z "$src_file" ]]; then
