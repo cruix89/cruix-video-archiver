@@ -93,7 +93,6 @@ process_file() {
             ffmpeg -y -loglevel info -i "$src_file" -map 0:s:$index_subtitle_tracks -c:s copy "$cache_dir/subtitle_tracks_${index_subtitle_tracks}.srt"
         else
             break  # if there are no more subtitle tracks, exit the loop
-            echo -e "\e[32m\e[1m[cruix-video-archiver] subtitle tracks extracted successfully: $subtitle_tracks\e[0m"
         fi
     done
 
@@ -113,7 +112,6 @@ process_file() {
             map_audio+=" -i \"$cache_dir/audio_${index}.aac\""
         else
             break  # no more audio tracks
-            echo -e "\e[32m\e[1m[cruix-video-archiver] audio tracks extracted successfully: $audio_tracks\e[0m"
         fi
     done
 
