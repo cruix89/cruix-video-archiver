@@ -181,8 +181,7 @@ main() {
             if ! grep -Fxq "$file" "$normalized_list_file"; then
                 echo "$file"
             fi
-            sleep 1
-        done | head -n 1)
+        done | head -n 1 2>/dev/null)
 
     if [[ -z "$src_file" ]]; then
         echo -e "\e[32m\e[1m[cruix-video-archiver] no unprocessed videos found.... exiting\e[0m"
