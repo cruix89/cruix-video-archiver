@@ -74,7 +74,7 @@ process_file() {
     local output_file
     output_file="$cache_dir/$(basename "${src_file%.*}.mkv")"
 
-    echo -e "\e[32m\e[1m[cruix-video-archiver] starting ffmpeg normalization process in: $src_file\e[0m"
+    echo -e "\e[32m\e[1m[cruix-video-archiver] starting ffmpeg normalization process in: \"$src_file\"\e[0m"
 
     # extract video track
     ffmpeg -y -loglevel info -i "$src_file" -map 0:v:0 -c:v copy "$cache_dir/video_track.mp4"
@@ -161,7 +161,7 @@ process_file() {
 
     else
         log_failed_file "$src_file"
-        echo -e "\e[31m\e[1m[cruix-video-archiver] error: process failed for: $src_file... exiting\e[0m"
+        echo -e "\e[31m\e[1m[cruix-video-archiver] error: process failed for: \"$src_file\"... exiting\e[0m"
     fi
 }
 
