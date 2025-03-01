@@ -179,9 +179,9 @@ main() {
     src_file=$(find "/downloads" -type f \( -name "*.mp4" -o -name "*.mkv" -o -name "*.webm" -o -name "*.flv" -o -name "*.avi" -o -name "*.mov" -o -name "*.wmv" -o -name "*.mpg" -o -name "*.mpeg" -o -name "*.3gp" -o -name "*.m4v" \) \
         | while read -r file; do
             if ! grep -Fxq "$file" "$normalized_list_file"; then
-                echo "$file"
+                echo "$file" 2>/dev/null
             fi
-        done | head -n 1 &>/dev/null)
+        done | head -n 1)
 
     if [[ -z "$src_file" ]]; then
         echo -e "\e[32m\e[1m[cruix-video-archiver] no unprocessed videos found.... exiting\e[0m"
