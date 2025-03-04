@@ -123,7 +123,7 @@ process_file() {
     done
 
     # reassemble the MKV with mkvmerge
-    echo -e "\e[32m\e[1m[cruix-video-archiver] starting mkvmerge packaging process...\e[0m"
+    echo -e "\e[32m\e[1m[cruix-video-archiver] starting mkv packaging process...\e[0m"
     local mkvmerge_command
     mkvmerge_command="mkvmerge -o \"$output_file\" --video-tracks 0 \"$cache_dir/video_track.mp4\""
 
